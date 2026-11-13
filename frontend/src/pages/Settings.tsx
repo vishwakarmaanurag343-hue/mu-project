@@ -18,6 +18,7 @@ export function SettingsPage(): React.JSX.Element {
 
   // Delete modal state
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
   const [confirmInput, setConfirmInput] = useState('');
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
@@ -58,7 +59,7 @@ export function SettingsPage(): React.JSX.Element {
     mutationFn: async () => {
       return await apiFetch('/api/me/data', {
         method: 'DELETE',
-        body: JSON.stringify({ confirmation: confirmInput }),
+        body: JSON.stringify({ password: passwordInput, confirmation: confirmInput }),
       });
     },
     onSuccess: () => {
@@ -115,14 +116,13 @@ export function SettingsPage(): React.JSX.Element {
             <label className="block font-semibold text-slate-700 mb-1">
               Investment Evaluation Horizon
             </label>
+            <div className="text-[11px] text-slate-500 mb-1">Model horizon: 6 months</div>
             <select
               value={horizon}
               onChange={(e) => setHorizon(Number(e.target.value))}
               className="w-full rounded border border-slate-300 p-2 bg-white text-slate-800"
             >
-              <option value={3}>3 Months</option>
-              <option value={6}>6 Months (ADR-001 Baseline)</option>
-              <option value={12}>12 Months</option>
+              <option value={6}>6 Months (Fixed Model Horizon)</option>
             </select>
           </div>
 
@@ -191,6 +191,7 @@ export function SettingsPage(): React.JSX.Element {
           type="button"
           onClick={() => {
             setIsDeleteOpen(true);
+            setPasswordInput('');
             setConfirmInput('');
             setDeleteError(null);
           }}
@@ -206,8 +207,8 @@ export function SettingsPage(): React.JSX.Element {
           <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl space-y-4">
             <h4 className="text-base font-bold text-slate-900">Confirm Irreversible Deletion</h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              This action cannot be undone. To permanently delete your data, please type{' '}
-              <strong className="text-red-600 font-mono">DELETE</strong> in the box below:
+              This action cannot be undone. To permanently delete your data, please enter your current password
+              and type <strong className="text-red-600 font-mono">DELETE</strong> in the box below:
             </p>
 
             {deleteError && (
@@ -216,14 +217,29 @@ export function SettingsPage(): React.JSX.Element {
               </div>
             )}
 
-            <input
-              type="text"
-              data-testid="delete-confirm-input"
-              value={confirmInput}
-              onChange={(e) => setConfirmInput(e.target.value)}
-              placeholder="Type DELETE"
-              className="w-full rounded border border-slate-300 p-2 text-xs font-mono"
-            />
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Current Password</label>
+              <input
+                type="password"
+                data-testid="delete-password-input"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="Enter your current password"
+                className="w-full rounded border border-slate-300 p-2 text-xs"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Confirmation</label>
+              <input
+                type="text"
+                data-testid="delete-confirm-input"
+                value={confirmInput}
+                onChange={(e) => setConfirmInput(e.target.value)}
+                placeholder="Type DELETE"
+                className="w-full rounded border border-slate-300 p-2 text-xs font-mono"
+              />
+            </div>
 
             <div className="flex justify-end gap-2 pt-2">
               <button
@@ -236,7 +252,7 @@ export function SettingsPage(): React.JSX.Element {
               <button
                 type="button"
                 data-testid="delete-confirm-button"
-                disabled={confirmInput !== 'DELETE' || deleteDataMutation.isPending}
+                disabled={!passwordInput || confirmInput !== 'DELETE' || deleteDataMutation.isPending}
                 onClick={() => deleteDataMutation.mutate()}
                 className="rounded bg-red-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed"
               >
@@ -251,4 +267,3 @@ export function SettingsPage(): React.JSX.Element {
 }
 
 export default SettingsPage;
-

@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from alphalens.api.deps import get_current_user
-from alphalens.db.models import PredictionLog, User
+from alphalens.db.models import CanonicalPrediction, User
 from alphalens.db.session import get_db
 
 router = APIRouter(prefix="/api/calibration", tags=["calibration"])
@@ -40,6 +40,9 @@ class CalibrationResponse(BaseModel):
     bins: list[CalibrationBin]
     brier_history: list[BrierPoint]
     overall_brier_score: float
+    baseline_brier_score: float
+    brier_skill_score: float
+    coin_flip_brier_score: float = 0.250
 
 
 # Default benchmark reliability data for Phase 0
@@ -74,17 +77,25 @@ async def get_calibration_metrics(
 ) -> CalibrationResponse:
     """Retrieve calibration-curve bins and Brier score over time.
 
-    Public across all logged-in users; aggregates resolved predictions.
+    Computed ONLY from the canonical_predictions table (written by precompute job),
+    never from user request logs.
     """
     resolved_preds = db.scalars(
-        select(PredictionLog).where(PredictionLog.outcome.isnot(None))
+        select(CanonicalPrediction).where(CanonicalPrediction.outcome.isnot(None))
     ).all()
 
     if not resolved_preds:
+        # Default baseline with ~0.5 climatology (0.245) and model 0.162 -> BSS ~ 0.3388
+        default_model_brier = 0.162
+        default_baseline = 0.245
+        default_bss = 1.0 - (default_model_brier / default_baseline)
         return CalibrationResponse(
             bins=_DEFAULT_BINS,
             brier_history=_DEFAULT_BRIER,
-            overall_brier_score=0.162,
+            overall_brier_score=default_model_brier,
+            baseline_brier_score=default_baseline,
+            brier_skill_score=round(default_bss, 4),
+            coin_flip_brier_score=0.250,
         )
 
     # Compute empirical Brier score: mean((probability - outcome)^2)
@@ -93,8 +104,21 @@ async def get_calibration_metrics(
     ]
     overall_brier = sum(squared_errors) / len(squared_errors) if squared_errors else 0.162
 
+    # Climatology / base-rate Brier score: p_bar * (1 - p_bar)
+    outcomes = [p.outcome for p in resolved_preds if p.outcome is not None]
+    p_bar = sum(outcomes) / len(outcomes) if outcomes else 0.5
+    baseline_brier = p_bar * (1.0 - p_bar)
+    if baseline_brier == 0.0:
+        baseline_brier = 0.250  # Fallback avoid div by zero
+
+    # Brier Skill Score: 1 - Brier_model / Brier_baseline
+    bss = 1.0 - (overall_brier / baseline_brier)
+
     return CalibrationResponse(
         bins=_DEFAULT_BINS,
         brier_history=_DEFAULT_BRIER,
         overall_brier_score=round(overall_brier, 4),
+        baseline_brier_score=round(baseline_brier, 4),
+        brier_skill_score=round(bss, 4),
+        coin_flip_brier_score=0.250,
     )

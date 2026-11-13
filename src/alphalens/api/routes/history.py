@@ -26,6 +26,7 @@ class HistoryItem(BaseModel):
     decision_label: str
     model_version: str
     outcome: float | None
+    model_horizon_months: int = 6
     created_at: datetime
 
 
@@ -37,9 +38,15 @@ async def get_user_history(
     db: Session = Depends(get_db),
 ) -> list[HistoryItem]:
     """Retrieve paginated list of served predictions for the authenticated user."""
+    # Predictions are logged by pseudo_id
+    user = db.get(User, current_user.id)
+    if not user or not user.pseudonym:
+        return []
+
+    pseudo_id = user.pseudonym.pseudo_id
     records = db.scalars(
         select(PredictionLog)
-        .where(PredictionLog.user_id == current_user.id)
+        .where(PredictionLog.pseudo_id == pseudo_id)
         .order_by(PredictionLog.created_at.desc())
         .offset(offset)
         .limit(limit)
@@ -53,6 +60,7 @@ async def get_user_history(
             decision_label=r.decision_label,
             model_version=r.model_version,
             outcome=r.outcome,
+            model_horizon_months=6,
             created_at=r.created_at,
         )
         for r in records

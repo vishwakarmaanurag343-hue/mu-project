@@ -64,16 +64,21 @@ describe('User Features UI', () => {
 
     const confirmBtn = screen.getByTestId('delete-confirm-button');
     const input = screen.getByTestId('delete-confirm-input');
+    const passwordInput = screen.getByTestId('delete-password-input');
 
     // Initially disabled
     expect(confirmBtn).toBeDisabled();
 
-    // Type partial string
+    // Type partial string without password
     fireEvent.change(input, { target: { value: 'DEL' } });
     expect(confirmBtn).toBeDisabled();
 
-    // Type exact string
+    // Type exact string without password
     fireEvent.change(input, { target: { value: 'DELETE' } });
+    expect(confirmBtn).toBeDisabled();
+
+    // Type password
+    fireEvent.change(passwordInput, { target: { value: 'ValidPassword123!' } });
     expect(confirmBtn).toBeEnabled();
   });
 });

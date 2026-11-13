@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     # Database & Storage
     database_url: str = "sqlite:///./alphalens.db"
     cache_dir: Path = Path("./cache")
+    upload_dir: Path = Path("./data/uploads")
 
     # Authentication & Session Security
     jwt_secret_key: SecretStr = SecretStr("insecure-dev-secret-change-in-prod-at-least-32-chars")

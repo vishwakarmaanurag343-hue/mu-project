@@ -28,6 +28,9 @@ interface CalibrationData {
   bins: CalibrationBin[];
   brier_history: BrierPoint[];
   overall_brier_score: number;
+  baseline_brier_score: number;
+  brier_skill_score: number;
+  coin_flip_brier_score: number;
 }
 
 export function CalibrationPage(): React.JSX.Element {
@@ -56,21 +59,42 @@ export function CalibrationPage(): React.JSX.Element {
         </p>
       </div>
 
-      {/* Brier Score Metric Banner */}
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm flex items-center justify-between">
-        <div>
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-            Overall Brier Score (Mean Squared Error)
+      {/* Brier Score Metric Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+            Model Brier Score
           </div>
-          <div className="text-3xl font-black text-slate-900 mt-1">
+          <div className="text-2xl font-black text-slate-900 mt-1">
             {data.overall_brier_score.toFixed(3)}
           </div>
-          <div className="text-[11px] text-slate-500 mt-0.5">
-            A score closer to 0 indicates superior calibration (naive coin flip benchmark = 0.250).
+          <div className="text-[10px] text-slate-500 mt-1">
+            Mean squared error of predictions. Lower is better.
           </div>
         </div>
-        <div className="text-right text-xs font-medium text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
-          Calibrated Engine Active
+
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+            Base-Rate (Climatology) Baseline
+          </div>
+          <div className="text-2xl font-black text-slate-900 mt-1">
+            {data.baseline_brier_score.toFixed(3)}
+          </div>
+          <div className="text-[10px] text-slate-500 mt-1">
+            Naive sample base-rate (coin flip ref = {data.coin_flip_brier_score.toFixed(3)}).
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-5 shadow-sm">
+          <div className="text-[11px] font-semibold uppercase tracking-wider text-blue-700">
+            Brier Skill Score (BSS)
+          </div>
+          <div className="text-2xl font-black text-blue-900 mt-1">
+            {data.brier_skill_score > 0 ? `+${(data.brier_skill_score * 100).toFixed(1)}%` : `${(data.brier_skill_score * 100).toFixed(1)}%`}
+          </div>
+          <div className="text-[10px] text-blue-600 mt-1">
+            Skill over baseline: 1 - (Brier_model / Brier_baseline).
+          </div>
         </div>
       </div>
 
@@ -118,14 +142,14 @@ export function CalibrationPage(): React.JSX.Element {
             Brier Score Trajectory
           </h3>
           <p className="text-xs text-slate-500 mb-4">
-            Longitudinal calibration stability across rolling forward test horizons.
+            Longitudinal calibration stability with coin-flip reference line.
           </p>
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data.brier_history}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" tick={{ fontSize: 11 }} />
-                <YAxis domain={[0.1, 0.25]} tick={{ fontSize: 11 }} />
+                <YAxis domain={[0.1, 0.28]} tick={{ fontSize: 11 }} />
                 <Tooltip />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 <Line
@@ -146,4 +170,3 @@ export function CalibrationPage(): React.JSX.Element {
 }
 
 export default CalibrationPage;
-

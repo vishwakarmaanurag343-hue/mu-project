@@ -1,26 +1,30 @@
-"""Document upload handling with magic bytes verification and consent auditing."""
+"""Document upload handling with sandbox process isolation, storage quota, and consent records."""
 
 import contextlib
-import io
 import uuid
 from datetime import UTC, datetime
+from pathlib import Path
 
-import pypdf
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile, status
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import select
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from alphalens.api.deps import get_current_user
 from alphalens.api.security import verify_csrf
 from alphalens.config import get_settings
-from alphalens.db.models import UploadRecord, User
+from alphalens.data.pdf_parser import parse_pdf_safe
+from alphalens.db.models import ConsentRecord, UploadRecord, User
 from alphalens.db.session import get_db
 
 router = APIRouter(prefix="/api/uploads", tags=["uploads"])
+limiter = Limiter(key_func=get_remote_address)
 
 MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024  # 20 MB
-MAX_PAGE_LIMIT = 100
+USER_STORAGE_QUOTA_BYTES = 200 * 1024 * 1024  # 200 MB
+CURRENT_NOTICE_VERSION = "2026.1"
 
 
 class UploadResponse(BaseModel):
@@ -36,7 +40,9 @@ class UploadResponse(BaseModel):
 
 
 @router.post("", response_model=UploadResponse, dependencies=[Depends(verify_csrf)])
+@limiter.limit("10/day")
 async def upload_document(
+    request: Request,
     file: UploadFile = File(description="Research document (PDF only)"),
     consent: bool = Form(
         description="Required consent that document will be processed for analysis"
@@ -46,7 +52,8 @@ async def upload_document(
 ) -> UploadResponse:
     """Upload and verify research PDF document.
 
-    Enforces 20 MB size limit, PDF magic bytes check, page limit, and random UUID storage.
+    Enforces 20 MB file ceiling, 200 MB user storage quota, PDF magic bytes check,
+    10s isolated subprocess parsing, and audits privacy consent version.
     """
     if not consent:
         raise HTTPException(
@@ -55,7 +62,9 @@ async def upload_document(
         )
 
     content = await file.read()
-    if len(content) > MAX_FILE_SIZE_BYTES:
+    file_size = len(content)
+
+    if file_size > MAX_FILE_SIZE_BYTES:
         raise HTTPException(
             status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
             detail="File size exceeds the 20 MB maximum limit",
@@ -68,28 +77,27 @@ async def upload_document(
             detail="Invalid file format: Document must be a valid PDF (magic bytes check failed)",
         )
 
-    # Parse in-memory with pypdf and enforce page limit
-    try:
-        reader = pypdf.PdfReader(io.BytesIO(content))
-        page_count = len(reader.pages)
-        if page_count > MAX_PAGE_LIMIT:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=(
-                    f"Document exceeds maximum page limit of {MAX_PAGE_LIMIT} pages "
-                    f"(found {page_count})"
-                ),
+    # Storage Quota Check: 200 MB per user
+    current_storage = (
+        db.scalar(
+            select(func.coalesce(func.sum(UploadRecord.file_size_bytes), 0)).where(
+                UploadRecord.user_id == current_user.id
             )
-    except HTTPException:
-        raise
-    except Exception as exc:
+        )
+        or 0
+    )
+
+    if current_storage + file_size > USER_STORAGE_QUOTA_BYTES:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Corrupted or unreadable PDF document",
-        ) from exc
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail="Storage quota exceeded: 200 MB limit per user.",
+        )
+
+    # Parse in a dedicated worker process with 10 s timeout and memory limits
+    page_count = parse_pdf_safe(content, max_pages=100, timeout_seconds=10.0)
 
     settings = get_settings()
-    upload_dir = settings.cache_dir / "uploads"
+    upload_dir = Path(settings.upload_dir)
     upload_dir.mkdir(parents=True, exist_ok=True)
 
     random_filename = f"{uuid.uuid4()}.pdf"
@@ -101,11 +109,19 @@ async def upload_document(
         user_id=current_user.id,
         original_filename=clean_filename,
         stored_filename=random_filename,
-        file_size_bytes=len(content),
+        file_size_bytes=file_size,
         page_count=page_count,
-        consent_given_at=datetime.now(UTC),
     )
     db.add(record)
+
+    # Record structured consent audit
+    consent_record = ConsentRecord(
+        user_id=current_user.id,
+        notice_version=CURRENT_NOTICE_VERSION,
+        consent_given_at=datetime.now(UTC),
+    )
+    db.add(consent_record)
+
     db.commit()
     db.refresh(record)
 
@@ -162,7 +178,7 @@ async def delete_user_upload(
         )
 
     settings = get_settings()
-    stored_path = settings.cache_dir / "uploads" / record.stored_filename
+    stored_path = Path(settings.upload_dir) / record.stored_filename
     if stored_path.is_file():
         with contextlib.suppress(Exception):
             stored_path.unlink()

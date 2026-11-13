@@ -3,11 +3,13 @@
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from alphalens.db.models import PredictionLog, User
+from alphalens.db.models import PredictionLog, User, UserPseudonym
 
-# Fixed model version for Phase 0 / Week 1
+# Fixed model horizon and version per ADR-001
+MODEL_HORIZON_MONTHS = 6
 MODEL_VERSION = "v1.0.0-quant"
 
 
@@ -49,6 +51,7 @@ class QuantReportResponse(BaseModel):
     confidence_interval: ConfidenceInterval
     decision_label: str
     as_of: str
+    model_horizon_months: int = MODEL_HORIZON_MONTHS
     factor_contributions: list[FactorContribution]
     scenarios: dict[str, ScenarioDetail]
     model_version: str
@@ -108,32 +111,6 @@ _PRECOMPUTED_SCORES: dict[str, dict[str, Any]] = {
             },
         },
     },
-    "HDFCBANK.NS": {
-        "probability": 0.54,
-        "ci": (0.48, 0.60),
-        "label": "Neutral",
-        "as_of": "2026-11-13",
-        "factors": [
-            {"factor": "Value", "contribution": 0.09, "score": 1.4},
-            {"factor": "Quality", "contribution": 0.08, "score": 1.5},
-            {"factor": "Momentum", "contribution": -0.07, "score": -1.1},
-            {"factor": "Low Volatility", "contribution": 0.02, "score": 0.3},
-        ],
-        "scenarios": {
-            "bull": {
-                "return_pct": 16.5,
-                "description": "Rapid deposit accretion and merger cost synergies",
-            },
-            "base": {
-                "return_pct": 8.0,
-                "description": "Gradual credit-to-deposit ratio normalization",
-            },
-            "bear": {
-                "return_pct": -8.5,
-                "description": "Margin pressure from elevated deposit competition",
-            },
-        },
-    },
 }
 
 _DEFAULT_PRECOMPUTE: dict[str, Any] = {
@@ -171,14 +148,21 @@ def get_precomputed_quant_score(
 ) -> QuantReportResponse:
     """Retrieve precomputed quantitative metrics and record prediction in append-only log."""
     data = _PRECOMPUTED_SCORES.get(ticker, _DEFAULT_PRECOMPUTE)
-
-    # Decision threshold applied strictly to label (never altering underlying probability)
     prob = float(data["probability"])
     lower, upper = data["ci"]
 
-    # Append to append-only prediction audit table
+    # Ensure pseudonym mapping exists for user
+    pseudo = db.scalar(select(UserPseudonym).where(UserPseudonym.user_id == user.id))
+    if not pseudo:
+        pseudo = UserPseudonym(user_id=user.id)
+        db.add(pseudo)
+        db.flush()
+
+    pseudo_id = pseudo.pseudo_id
+
+    # Append to append-only prediction audit table referencing pseudo_id
     log_entry = PredictionLog(
-        user_id=user.id,
+        pseudo_id=pseudo_id,
         ticker=ticker,
         probability=prob,
         decision_label=data["label"],
@@ -193,6 +177,7 @@ def get_precomputed_quant_score(
         confidence_interval=ConfidenceInterval(lower=lower, upper=upper),
         decision_label=data["label"],
         as_of=data["as_of"],
+        model_horizon_months=MODEL_HORIZON_MONTHS,
         factor_contributions=[FactorContribution(**fc) for fc in data["factors"]],
         scenarios={k: ScenarioDetail(**v) for k, v in data["scenarios"].items()},
         model_version=MODEL_VERSION,

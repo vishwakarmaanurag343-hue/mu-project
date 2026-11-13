@@ -51,7 +51,7 @@ export function QuantTier({ data }: { data: QuantData }): React.JSX.Element {
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-1">
-            As of: <span className="font-medium text-slate-700">{data.as_of}</span> · Quant Engine:{' '}
+            As of: <span className="font-medium text-slate-700">{data.as_of}</span> · Model horizon: 6 months · Quant Engine:{' '}
             <span className="font-mono">{data.model_version}</span>
           </p>
         </div>

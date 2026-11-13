@@ -183,7 +183,8 @@ export interface paths {
          * Upload Document
          * @description Upload and verify research PDF document.
          *
-         *     Enforces 20 MB size limit, PDF magic bytes check, page limit, and stores file under a random UUID.
+         *     Enforces 20 MB file ceiling, 200 MB user storage quota, PDF magic bytes check,
+         *     10s isolated subprocess parsing, and audits privacy consent version.
          */
         post: operations["upload_document_api_uploads_post"];
         delete?: never;
@@ -204,7 +205,7 @@ export interface paths {
         post?: never;
         /**
          * Delete User Upload
-         * @description Delete an upload record and its underlying stored file. Returns 404 if not found or unauthorized.
+         * @description Delete an upload record and stored file. Returns 404 if not found or unauthorized.
          */
         delete: operations["delete_user_upload_api_uploads__upload_id__delete"];
         options?: never;
@@ -270,7 +271,9 @@ export interface paths {
          * Delete My Data
          * @description Permanently delete user account and uploaded documents, and pseudonymise prediction records.
          *
-         *     Requires explicit confirmation payload {"confirmation": "DELETE"}.
+         *     Requires current password (wrong password -> 403) and exact string 'DELETE' in body.
+         *     Database deletions occur in one atomic transaction first; files/vectors are cleaned post-transaction.
+         *     Any filesystem/vector deletion failures are recorded in pending_deletions.
          */
         delete: operations["delete_my_data_api_me_data_delete"];
         options?: never;
@@ -289,7 +292,8 @@ export interface paths {
          * Get Calibration Metrics
          * @description Retrieve calibration-curve bins and Brier score over time.
          *
-         *     Public across all logged-in users; aggregates resolved predictions.
+         *     Computed ONLY from the canonical_predictions table (written by precompute job),
+         *     never from user request logs.
          */
         get: operations["get_calibration_metrics_api_calibration_get"];
         put?: never;
@@ -389,6 +393,15 @@ export interface components {
             brier_history: components["schemas"]["BrierPoint"][];
             /** Overall Brier Score */
             overall_brier_score: number;
+            /** Baseline Brier Score */
+            baseline_brier_score: number;
+            /** Brier Skill Score */
+            brier_skill_score: number;
+            /**
+             * Coin Flip Brier Score
+             * @default 0.25
+             */
+            coin_flip_brier_score: number;
         };
         /**
          * ConfidenceInterval
@@ -402,9 +415,11 @@ export interface components {
         };
         /**
          * DeleteDataRequest
-         * @description Confirmation payload requiring exact string 'DELETE'.
+         * @description Confirmation payload requiring current password and exact string 'DELETE'.
          */
         DeleteDataRequest: {
+            /** Password */
+            password: string;
             /** Confirmation */
             confirmation: string;
         };
@@ -445,6 +460,11 @@ export interface components {
             model_version: string;
             /** Outcome */
             outcome: number | null;
+            /**
+             * Model Horizon Months
+             * @default 6
+             */
+            model_horizon_months: number;
             /**
              * Created At
              * Format: date-time
@@ -506,6 +526,11 @@ export interface components {
             decision_label: string;
             /** As Of */
             as_of: string;
+            /**
+             * Model Horizon Months
+             * @default 6
+             */
+            model_horizon_months: number;
             /** Factor Contributions */
             factor_contributions: components["schemas"]["FactorContribution"][];
             /** Scenarios */

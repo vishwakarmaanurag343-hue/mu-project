@@ -332,7 +332,7 @@
           "uploads"
         ],
         "summary": "Upload Document",
-        "description": "Upload and verify research PDF document.\n\nEnforces 20 MB size limit, PDF magic bytes check, page limit, and stores file under a random UUID.",
+        "description": "Upload and verify research PDF document.\n\nEnforces 20 MB file ceiling, 200 MB user storage quota, PDF magic bytes check,\n10s isolated subprocess parsing, and audits privacy consent version.",
         "operationId": "upload_document_api_uploads_post",
         "requestBody": {
           "content": {
@@ -374,7 +374,7 @@
           "uploads"
         ],
         "summary": "Delete User Upload",
-        "description": "Delete an upload record and its underlying stored file. Returns 404 if not found or unauthorized.",
+        "description": "Delete an upload record and stored file. Returns 404 if not found or unauthorized.",
         "operationId": "delete_user_upload_api_uploads__upload_id__delete",
         "parameters": [
           {
@@ -545,7 +545,7 @@
           "profile"
         ],
         "summary": "Delete My Data",
-        "description": "Permanently delete user account and uploaded documents, and pseudonymise prediction records.\n\nRequires explicit confirmation payload {\"confirmation\": \"DELETE\"}.",
+        "description": "Permanently delete user account and uploaded documents, and pseudonymise prediction records.\n\nRequires current password (wrong password -> 403) and exact string 'DELETE' in body.\nDatabase deletions occur in one atomic transaction first; files/vectors are cleaned post-transaction.\nAny filesystem/vector deletion failures are recorded in pending_deletions.",
         "operationId": "delete_my_data_api_me_data_delete",
         "requestBody": {
           "content": {
@@ -591,7 +591,7 @@
           "calibration"
         ],
         "summary": "Get Calibration Metrics",
-        "description": "Retrieve calibration-curve bins and Brier score over time.\n\nPublic across all logged-in users; aggregates resolved predictions.",
+        "description": "Retrieve calibration-curve bins and Brier score over time.\n\nComputed ONLY from the canonical_predictions table (written by precompute job),\nnever from user request logs.",
         "operationId": "get_calibration_metrics_api_calibration_get",
         "responses": {
           "200": {
@@ -760,6 +760,19 @@
           "overall_brier_score": {
             "type": "number",
             "title": "Overall Brier Score"
+          },
+          "baseline_brier_score": {
+            "type": "number",
+            "title": "Baseline Brier Score"
+          },
+          "brier_skill_score": {
+            "type": "number",
+            "title": "Brier Skill Score"
+          },
+          "coin_flip_brier_score": {
+            "type": "number",
+            "title": "Coin Flip Brier Score",
+            "default": 0.25
           }
         },
         "additionalProperties": false,
@@ -767,7 +780,9 @@
         "required": [
           "bins",
           "brier_history",
-          "overall_brier_score"
+          "overall_brier_score",
+          "baseline_brier_score",
+          "brier_skill_score"
         ],
         "title": "CalibrationResponse",
         "description": "Model calibration curve and Brier score over time."
@@ -794,6 +809,10 @@
       },
       "DeleteDataRequest": {
         "properties": {
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
           "confirmation": {
             "type": "string",
             "title": "Confirmation"
@@ -802,10 +821,11 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "password",
           "confirmation"
         ],
         "title": "DeleteDataRequest",
-        "description": "Confirmation payload requiring exact string 'DELETE'."
+        "description": "Confirmation payload requiring current password and exact string 'DELETE'."
       },
       "FactorContribution": {
         "properties": {
@@ -878,6 +898,11 @@
               }
             ],
             "title": "Outcome"
+          },
+          "model_horizon_months": {
+            "type": "integer",
+            "title": "Model Horizon Months",
+            "default": 6
           },
           "created_at": {
             "type": "string",
@@ -997,6 +1022,11 @@
           "as_of": {
             "type": "string",
             "title": "As Of"
+          },
+          "model_horizon_months": {
+            "type": "integer",
+            "title": "Model Horizon Months",
+            "default": 6
           },
           "factor_contributions": {
             "items": {

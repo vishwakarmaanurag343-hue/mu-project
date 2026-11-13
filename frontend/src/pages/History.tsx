@@ -10,6 +10,7 @@ interface HistoryRecord {
   decision_label: string;
   model_version: string;
   outcome: number | null;
+  model_horizon_months: number;
   created_at: string;
 }
 
@@ -42,6 +43,7 @@ export function HistoryPage(): React.JSX.Element {
                   <th className="p-3">Ticker</th>
                   <th className="p-3">P(Outperform)</th>
                   <th className="p-3">Decision</th>
+                  <th className="p-3">Horizon</th>
                   <th className="p-3">Model</th>
                   <th className="p-3">Outcome</th>
                   <th className="p-3 text-right">Action</th>
@@ -69,6 +71,9 @@ export function HistoryPage(): React.JSX.Element {
                       >
                         {item.decision_label}
                       </span>
+                    </td>
+                    <td className="p-3 text-slate-600 font-medium text-[11px]">
+                      Model horizon: 6 months
                     </td>
                     <td className="p-3 font-mono text-slate-500 text-[11px]">{item.model_version}</td>
                     <td className="p-3 text-slate-600">
@@ -98,4 +103,3 @@ export function HistoryPage(): React.JSX.Element {
 }
 
 export default HistoryPage;
-

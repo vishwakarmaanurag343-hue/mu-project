@@ -13,8 +13,17 @@ from sqlalchemy.pool import StaticPool
 
 from alphalens.api.deps import get_current_user, get_db
 from alphalens.api.main import create_app
+from alphalens.api.security import hash_password
 from alphalens.config import get_settings
-from alphalens.db.models import Base, PredictionLog, UploadRecord, User, UserProfile, UserRole
+from alphalens.db.models import (
+    Base,
+    PredictionLog,
+    UploadRecord,
+    User,
+    UserProfile,
+    UserPseudonym,
+    UserRole,
+)
 
 # In-memory test DB
 test_engine = create_engine(
@@ -59,14 +68,14 @@ def users() -> tuple[User, User]:
         user_a = User(
             id=uuid.uuid4(),
             email="user_a@example.com",
-            password_hash="test-hash-a",
+            password_hash=hash_password("SuperSecurePassword123!"),
             role=UserRole.USER,
             is_active=True,
         )
         user_b = User(
             id=uuid.uuid4(),
             email="user_b@example.com",
-            password_hash="test-hash-b",
+            password_hash=hash_password("SuperSecurePassword123!"),
             role=UserRole.USER,
             is_active=True,
         )
@@ -144,6 +153,15 @@ def test_user_isolation_for_uploads_and_history(users: tuple[User, User]) -> Non
 
     # Create upload and prediction log belonging to User B
     with TestingSessionLocal() as db:
+        user_b_db = db.scalar(select(User).where(User.id == user_b.id))
+        assert user_b_db is not None
+        pseudo_b = UserPseudonym(user_id=user_b.id, pseudo_id=uuid.uuid4())
+        user_a_db = db.scalar(select(User).where(User.id == user_a.id))
+        assert user_a_db is not None
+        pseudo_a = UserPseudonym(user_id=user_a.id, pseudo_id=uuid.uuid4())
+        db.add_all([pseudo_a, pseudo_b])
+        db.commit()
+
         upload_b = UploadRecord(
             id=uuid.uuid4(),
             user_id=user_b.id,
@@ -151,11 +169,10 @@ def test_user_isolation_for_uploads_and_history(users: tuple[User, User]) -> Non
             stored_filename="b_file.pdf",
             file_size_bytes=1024,
             page_count=2,
-            consent_given_at=user_b.created_at,
         )
         pred_b = PredictionLog(
             id=uuid.uuid4(),
-            user_id=user_b.id,
+            pseudo_id=pseudo_b.pseudo_id,
             ticker="TCS.NS",
             probability=0.72,
             decision_label="Overweight",
@@ -192,14 +209,18 @@ def test_delete_my_data_pseudonymisation(users: tuple[User, User]) -> None:
     user_a, _ = users
     settings = get_settings()
 
-    # Create test physical file in cache directory
-    upload_dir = settings.cache_dir / "uploads"
+    # Create test physical file in upload directory
+    upload_dir = settings.upload_dir
     upload_dir.mkdir(parents=True, exist_ok=True)
     fake_stored_filename = f"{uuid.uuid4()}.pdf"
     file_path = upload_dir / fake_stored_filename
     file_path.write_bytes(b"%PDF-1.4 test file")
 
     with TestingSessionLocal() as db:
+        user_a_db = db.scalar(select(User).where(User.id == user_a.id))
+        assert user_a_db is not None
+        user_a_db.password_hash = hash_password("SuperSecurePassword123!")
+        pseudo_a = UserPseudonym(user_id=user_a.id, pseudo_id=uuid.uuid4())
         upload_a = UploadRecord(
             id=uuid.uuid4(),
             user_id=user_a.id,
@@ -207,11 +228,10 @@ def test_delete_my_data_pseudonymisation(users: tuple[User, User]) -> None:
             stored_filename=fake_stored_filename,
             file_size_bytes=100,
             page_count=1,
-            consent_given_at=user_a.created_at,
         )
         pred_a = PredictionLog(
             id=uuid.uuid4(),
-            user_id=user_a.id,
+            pseudo_id=pseudo_a.pseudo_id,
             ticker="RELIANCE.NS",
             probability=0.68,
             decision_label="Overweight",
@@ -221,9 +241,10 @@ def test_delete_my_data_pseudonymisation(users: tuple[User, User]) -> None:
             user_id=user_a.id,
             sector_exclusions=["Tobacco"],
         )
-        db.add_all([upload_a, pred_a, profile_a])
+        db.add_all([pseudo_a, upload_a, pred_a, profile_a])
         db.commit()
         pred_id = pred_a.id
+        pseudo_id = pseudo_a.pseudo_id
 
     app = create_app()
     app.dependency_overrides[get_db] = override_get_db
@@ -236,7 +257,7 @@ def test_delete_my_data_pseudonymisation(users: tuple[User, User]) -> None:
     res_bad_confirm = client.request(
         "DELETE",
         "/api/me/data",
-        json={"confirmation": "WRONG"},
+        json={"password": "SuperSecurePassword123!", "confirmation": "WRONG"},
         headers=headers,
     )
     assert res_bad_confirm.status_code == 400
@@ -245,7 +266,7 @@ def test_delete_my_data_pseudonymisation(users: tuple[User, User]) -> None:
     res_delete = client.request(
         "DELETE",
         "/api/me/data",
-        json={"confirmation": "DELETE"},
+        json={"password": "SuperSecurePassword123!", "confirmation": "DELETE"},
         headers=headers,
     )
     assert res_delete.status_code == 200
@@ -257,11 +278,12 @@ def test_delete_my_data_pseudonymisation(users: tuple[User, User]) -> None:
     with TestingSessionLocal() as db:
         assert db.scalar(select(User).where(User.id == user_a.id)) is None
         assert db.scalar(select(UserProfile).where(UserProfile.user_id == user_a.id)) is None
+        assert db.scalar(select(UserPseudonym).where(UserPseudonym.user_id == user_a.id)) is None
 
-        # 5. Verify prediction log is PSEUDONYMISED (record preserved, user_id is NULL)
+        # 5. Verify prediction log is PSEUDONYMISED (record preserved, pseudo_id still intact)
         preserved_pred = db.scalar(select(PredictionLog).where(PredictionLog.id == pred_id))
         assert preserved_pred is not None
-        assert preserved_pred.user_id is None
+        assert preserved_pred.pseudo_id == pseudo_id
         assert preserved_pred.ticker == "RELIANCE.NS"
         assert preserved_pred.probability == 0.68
 

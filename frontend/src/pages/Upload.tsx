@@ -64,9 +64,11 @@ export function UploadPage(): React.JSX.Element {
 
         {/* Privacy Notice */}
         <div className="rounded-lg border border-blue-100 bg-blue-50 p-4 text-xs text-blue-900 leading-relaxed">
-          <strong>Privacy Notice:</strong> All uploaded documents are parsed in an isolated sandbox.
-          By proceeding, you explicitly authorize analysis of this document by the calibrated LLM
-          reasoning engine.
+          <p>
+            <strong>Privacy Notice:</strong> All uploaded documents are parsed in an isolated sandbox.
+            By proceeding, you explicitly authorize analysis of this document by the calibrated LLM
+            reasoning engine. Data already processed by the LLM provider is subject to their retention policy.
+          </p>
         </div>
 
         {error && (
@@ -100,7 +102,7 @@ export function UploadPage(): React.JSX.Element {
               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
             />
             <label htmlFor="consent-checkbox" className="text-xs text-slate-700 select-none cursor-pointer">
-              My document will be sent to an external LLM provider for analysis
+              My document will be sent to an external LLM provider for analysis. Data already processed by the LLM provider is subject to their retention policy.
             </label>
           </div>
 
@@ -130,15 +132,16 @@ export function UploadPage(): React.JSX.Element {
               <div key={doc.id} className="p-3.5 flex items-center justify-between text-xs">
                 <div>
                   <div className="font-semibold text-slate-800">{doc.original_filename}</div>
-                  <div className="text-slate-500 text-[11px] mt-0.5">
-                    {(doc.file_size_bytes / 1024).toFixed(0)} KB · {doc.page_count} pages ·{' '}
+                  <div className="text-slate-400 text-[11px]">
+                    {(doc.file_size_bytes / 1024).toFixed(1)} KB • {doc.page_count} pages •{' '}
                     {new Date(doc.created_at).toLocaleDateString()}
                   </div>
                 </div>
                 <button
+                  type="button"
                   onClick={() => deleteMutation.mutate(doc.id)}
                   disabled={deleteMutation.isPending}
-                  className="text-red-600 hover:text-red-800 font-medium px-2 py-1 rounded hover:bg-red-50"
+                  className="rounded px-2.5 py-1 text-red-600 hover:bg-red-50 text-xs font-medium"
                 >
                   Delete
                 </button>
@@ -152,4 +155,3 @@ export function UploadPage(): React.JSX.Element {
 }
 
 export default UploadPage;
-
