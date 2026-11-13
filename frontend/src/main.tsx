@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import App from './App';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthProvider } from './hooks/useAuth';
+import { SkeletonLoader } from './components/SkeletonLoader';
 import './index.css';
+
+// Lazy-load dashboard and report pages to preserve under-200KB bundle budget
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Report = lazy(() => import('./pages/Report'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,7 +27,19 @@ const router = createBrowserRouter([
     path: '/',
     element: (
       <ProtectedRoute>
-        <App />
+        <Suspense fallback={<SkeletonLoader />}>
+          <Dashboard />
+        </Suspense>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/report/:ticker',
+    element: (
+      <ProtectedRoute>
+        <Suspense fallback={<SkeletonLoader />}>
+          <Report />
+        </Suspense>
       </ProtectedRoute>
     ),
   },

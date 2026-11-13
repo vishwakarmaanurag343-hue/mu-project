@@ -4,7 +4,7 @@ import uuid
 from datetime import UTC, datetime
 from enum import StrEnum
 
-from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Index, String, Uuid
+from sqlalchemy import Boolean, DateTime, Enum, Float, ForeignKey, Index, String, Uuid
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -38,6 +38,9 @@ class User(Base):
     refresh_tokens: Mapped[list["RefreshToken"]] = relationship(
         "RefreshToken", back_populates="user", cascade="all, delete-orphan"
     )
+    predictions: Mapped[list["PredictionLog"]] = relationship(
+        "PredictionLog", back_populates="user", cascade="all, delete-orphan"
+    )
 
 
 class RefreshToken(Base):
@@ -60,4 +63,25 @@ class RefreshToken(Base):
     user: Mapped[User] = relationship("User", back_populates="refresh_tokens")
 
 
+class PredictionLog(Base):
+    """Append-only audit log for served quant predictions."""
+
+    __tablename__ = "prediction_logs"
+
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        Uuid, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    ticker: Mapped[str] = mapped_column(String(32), index=True, nullable=False)
+    probability: Mapped[float] = mapped_column(Float, nullable=False)
+    decision_label: Mapped[str] = mapped_column(String(32), nullable=False)
+    model_version: Mapped[str] = mapped_column(String(32), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=lambda: datetime.now(UTC), nullable=False
+    )
+
+    user: Mapped[User] = relationship("User", back_populates="predictions")
+
+
 Index("ix_refresh_tokens_user_revoked", RefreshToken.user_id, RefreshToken.revoked)
+Index("ix_prediction_logs_ticker_created", PredictionLog.ticker, PredictionLog.created_at)

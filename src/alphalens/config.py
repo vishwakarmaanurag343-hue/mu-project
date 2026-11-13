@@ -26,6 +26,15 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 15
     refresh_token_expire_days: int = 7
 
+    # Evidence & Security Allowlist
+    allowed_evidence_domains: list[str] = [
+        "bseindia.com",
+        "nseindia.com",
+        "rbi.org.in",
+        "sebi.gov.in",
+        "mca.gov.in",
+    ]
+
     # LLM Settings
     llm_provider: str = "openai_compatible"
     llm_base_url: str | None = None

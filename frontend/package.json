@@ -46,7 +46,8 @@
   },
   "size-limit": [
     {
-      "path": "dist/assets/*.js",
+      "name": "Initial Application Bundle",
+      "path": "dist/assets/index-*.js",
       "limit": "200 KB",
       "gzip": true
     }
