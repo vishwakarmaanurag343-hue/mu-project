@@ -16,12 +16,21 @@ class Settings(BaseSettings):
     app_env: Literal["dev", "test", "prod"] = "dev"
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
 
+    # Database & Storage
+    database_url: str = "sqlite:///./alphalens.db"
+    cache_dir: Path = Path("./cache")
+
+    # Authentication & Session Security
+    jwt_secret_key: SecretStr = SecretStr("insecure-dev-secret-change-in-prod-at-least-32-chars")
+    jwt_algorithm: str = "HS256"
+    access_token_expire_minutes: int = 15
+    refresh_token_expire_days: int = 7
+
+    # LLM Settings
     llm_provider: str = "openai_compatible"
     llm_base_url: str | None = None
     llm_model: str | None = None
     llm_api_key: SecretStr | None = None
-
-    cache_dir: Path = Path("./cache")
 
 
 @lru_cache

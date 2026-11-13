@@ -8,11 +8,16 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 import alphalens
+from alphalens.api.routes.auth import limiter
+from alphalens.api.routes.auth import router as auth_router
 from alphalens.api.security import RequestIdMiddleware, SecurityHeadersMiddleware
 from alphalens.config import get_settings
+from alphalens.db.session import init_db
 from alphalens.logging import configure_logging, get_logger
 
 logger = get_logger("alphalens.api")
@@ -28,6 +33,7 @@ def create_app() -> FastAPI:
     Therefore, CORS middleware is intentionally omitted to prevent cross-origin abuse.
     """
     configure_logging()
+    init_db()
     settings = get_settings()
 
     docs_url = None if settings.app_env == "prod" else "/docs"
@@ -40,10 +46,15 @@ def create_app() -> FastAPI:
         openapi_url=openapi_url,
     )
 
+    # Attach slowapi limiter state
+    app.state.limiter = limiter
+    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
+
     # Middleware execution: Security headers -> Request ID
     app.add_middleware(SecurityHeadersMiddleware)
     app.add_middleware(RequestIdMiddleware)
 
+    # Global exception handlers
     @app.exception_handler(Exception)
     async def global_exception_handler(request: Request, exc: Exception) -> JSONResponse:
         request_id = getattr(request.state, "request_id", str(uuid.uuid4()))
@@ -83,6 +94,9 @@ def create_app() -> FastAPI:
             headers={"X-Request-ID": request_id},
         )
 
+    # Register API Routers
+    app.include_router(auth_router)
+
     @app.get("/api/health")
     async def health_check() -> dict[str, Any]:
         """Health check endpoint."""
@@ -101,7 +115,6 @@ def create_app() -> FastAPI:
 
         @app.get("/{full_path:path}")
         async def spa_fallback(full_path: str) -> Any:
-            # All unmapped /api routes must 404 with JSON, never return index.html
             clean_path = full_path.lstrip("/")
             if clean_path == "api" or clean_path.startswith("api/"):
                 raise StarletteHTTPException(
