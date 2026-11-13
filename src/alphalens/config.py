@@ -1,0 +1,30 @@
+"""Application settings, loaded from environment and validated at startup."""
+
+from functools import lru_cache
+from pathlib import Path
+from typing import Literal
+
+from pydantic import SecretStr
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    """All runtime configuration. Secrets use SecretStr so they never print."""
+
+    model_config = SettingsConfigDict(env_file=".env", extra="forbid")
+
+    app_env: Literal["dev", "test", "prod"] = "dev"
+    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
+
+    llm_provider: str = "openai_compatible"
+    llm_base_url: str | None = None
+    llm_model: str | None = None
+    llm_api_key: SecretStr | None = None
+
+    cache_dir: Path = Path("./cache")
+
+
+@lru_cache
+def get_settings() -> Settings:
+    """Return the cached settings singleton."""
+    return Settings()
