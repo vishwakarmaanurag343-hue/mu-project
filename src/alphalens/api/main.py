@@ -15,8 +15,12 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 import alphalens
 from alphalens.api.routes.auth import limiter as auth_limiter
 from alphalens.api.routes.auth import router as auth_router
+from alphalens.api.routes.calibration import router as calibration_router
+from alphalens.api.routes.history import router as history_router
+from alphalens.api.routes.profile import router as profile_router
 from alphalens.api.routes.reports import router as reports_router
 from alphalens.api.routes.tickers import router as tickers_router
+from alphalens.api.routes.uploads import router as uploads_router
 from alphalens.api.security import RequestIdMiddleware, SecurityHeadersMiddleware
 from alphalens.config import get_settings
 from alphalens.db.session import init_db
@@ -100,6 +104,10 @@ def create_app() -> FastAPI:
     app.include_router(auth_router)
     app.include_router(tickers_router)
     app.include_router(reports_router)
+    app.include_router(uploads_router)
+    app.include_router(history_router)
+    app.include_router(profile_router)
+    app.include_router(calibration_router)
 
     @app.get("/api/health")
     async def health_check() -> dict[str, Any]:

@@ -166,6 +166,140 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/uploads": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List User Uploads
+         * @description List all research documents uploaded by the authenticated user.
+         */
+        get: operations["list_user_uploads_api_uploads_get"];
+        put?: never;
+        /**
+         * Upload Document
+         * @description Upload and verify research PDF document.
+         *
+         *     Enforces 20 MB size limit, PDF magic bytes check, page limit, and stores file under a random UUID.
+         */
+        post: operations["upload_document_api_uploads_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/uploads/{upload_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete User Upload
+         * @description Delete an upload record and its underlying stored file. Returns 404 if not found or unauthorized.
+         */
+        delete: operations["delete_user_upload_api_uploads__upload_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get User History
+         * @description Retrieve paginated list of served predictions for the authenticated user.
+         */
+        get: operations["get_user_history_api_history_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Profile
+         * @description Retrieve user investment preferences.
+         */
+        get: operations["get_profile_api_profile_get"];
+        /**
+         * Update Profile
+         * @description Update user investment profile.
+         */
+        put: operations["update_profile_api_profile_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/me/data": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete My Data
+         * @description Permanently delete user account and uploaded documents, and pseudonymise prediction records.
+         *
+         *     Requires explicit confirmation payload {"confirmation": "DELETE"}.
+         */
+        delete: operations["delete_my_data_api_me_data_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/calibration": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Calibration Metrics
+         * @description Retrieve calibration-curve bins and Brier score over time.
+         *
+         *     Public across all logged-in users; aggregates resolved predictions.
+         */
+        get: operations["get_calibration_metrics_api_calibration_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/health": {
         parameters: {
             query?: never;
@@ -207,6 +341,55 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** Body_upload_document_api_uploads_post */
+        Body_upload_document_api_uploads_post: {
+            /**
+             * File
+             * @description Research document (PDF only)
+             */
+            file: string;
+            /**
+             * Consent
+             * @description Required consent that document will be processed for analysis
+             */
+            consent: boolean;
+        };
+        /**
+         * BrierPoint
+         * @description Historical Brier score observation.
+         */
+        BrierPoint: {
+            /** Date */
+            date: string;
+            /** Brier Score */
+            brier_score: number;
+        };
+        /**
+         * CalibrationBin
+         * @description Reliability curve probability bin.
+         */
+        CalibrationBin: {
+            /** Bin Center */
+            bin_center: number;
+            /** Predicted Avg */
+            predicted_avg: number;
+            /** Empirical Frequency */
+            empirical_frequency: number;
+            /** Sample Count */
+            sample_count: number;
+        };
+        /**
+         * CalibrationResponse
+         * @description Model calibration curve and Brier score over time.
+         */
+        CalibrationResponse: {
+            /** Bins */
+            bins: components["schemas"]["CalibrationBin"][];
+            /** Brier History */
+            brier_history: components["schemas"]["BrierPoint"][];
+            /** Overall Brier Score */
+            overall_brier_score: number;
+        };
         /**
          * ConfidenceInterval
          * @description Lower and upper confidence intervals.
@@ -216,6 +399,14 @@ export interface components {
             lower: number;
             /** Upper */
             upper: number;
+        };
+        /**
+         * DeleteDataRequest
+         * @description Confirmation payload requiring exact string 'DELETE'.
+         */
+        DeleteDataRequest: {
+            /** Confirmation */
+            confirmation: string;
         };
         /**
          * FactorContribution
@@ -235,6 +426,32 @@ export interface components {
             detail?: components["schemas"]["ValidationError"][];
         };
         /**
+         * HistoryItem
+         * @description User prediction history item.
+         */
+        HistoryItem: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Ticker */
+            ticker: string;
+            /** Probability */
+            probability: number;
+            /** Decision Label */
+            decision_label: string;
+            /** Model Version */
+            model_version: string;
+            /** Outcome */
+            outcome: number | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /**
          * LoginRequest
          * @description User login payload.
          */
@@ -246,6 +463,34 @@ export interface components {
             email: string;
             /** Password */
             password: string;
+        };
+        /**
+         * ProfilePayload
+         * @description User investment profile payload.
+         */
+        ProfilePayload: {
+            /** @default moderate */
+            risk_level: components["schemas"]["RiskLevel"];
+            /**
+             * Investment Horizon Months
+             * @default 6
+             * @enum {integer}
+             */
+            investment_horizon_months: 3 | 6 | 12;
+            /** Sector Exclusions */
+            sector_exclusions?: string[];
+        };
+        /**
+         * ProfileResponse
+         * @description User profile response.
+         */
+        ProfileResponse: {
+            /** Risk Level */
+            risk_level: string;
+            /** Investment Horizon Months */
+            investment_horizon_months: number;
+            /** Sector Exclusions */
+            sector_exclusions: string[];
         };
         /**
          * QuantReportResponse
@@ -287,6 +532,12 @@ export interface components {
             password: string;
         };
         /**
+         * RiskLevel
+         * @description User risk tolerance tiers.
+         * @enum {string}
+         */
+        RiskLevel: "conservative" | "moderate" | "aggressive";
+        /**
          * ScenarioDetail
          * @description Scenario return expectation and thesis statement.
          */
@@ -312,6 +563,28 @@ export interface components {
             name: string;
             /** Sector */
             sector: string;
+        };
+        /**
+         * UploadResponse
+         * @description Metadata response for an uploaded research document.
+         */
+        UploadResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Original Filename */
+            original_filename: string;
+            /** File Size Bytes */
+            file_size_bytes: number;
+            /** Page Count */
+            page_count: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
         };
         /**
          * UserResponse
@@ -579,6 +852,232 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_user_uploads_api_uploads_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UploadResponse"][];
+                };
+            };
+        };
+    };
+    upload_document_api_uploads_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_upload_document_api_uploads_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UploadResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_user_upload_api_uploads__upload_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                upload_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_user_history_api_history_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HistoryItem"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_profile_api_profile_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProfileResponse"];
+                };
+            };
+        };
+    };
+    update_profile_api_profile_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProfilePayload"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProfileResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_my_data_api_me_data_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeleteDataRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_calibration_metrics_api_calibration_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CalibrationResponse"];
                 };
             };
         };

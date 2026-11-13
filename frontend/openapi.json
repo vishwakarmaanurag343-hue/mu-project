@@ -302,6 +302,311 @@
         }
       }
     },
+    "/api/uploads": {
+      "get": {
+        "tags": [
+          "uploads"
+        ],
+        "summary": "List User Uploads",
+        "description": "List all research documents uploaded by the authenticated user.",
+        "operationId": "list_user_uploads_api_uploads_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UploadResponse"
+                  },
+                  "type": "array",
+                  "title": "Response List User Uploads Api Uploads Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "uploads"
+        ],
+        "summary": "Upload Document",
+        "description": "Upload and verify research PDF document.\n\nEnforces 20 MB size limit, PDF magic bytes check, page limit, and stores file under a random UUID.",
+        "operationId": "upload_document_api_uploads_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_document_api_uploads_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/uploads/{upload_id}": {
+      "delete": {
+        "tags": [
+          "uploads"
+        ],
+        "summary": "Delete User Upload",
+        "description": "Delete an upload record and its underlying stored file. Returns 404 if not found or unauthorized.",
+        "operationId": "delete_user_upload_api_uploads__upload_id__delete",
+        "parameters": [
+          {
+            "name": "upload_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Upload Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Delete User Upload Api Uploads  Upload Id  Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/history": {
+      "get": {
+        "tags": [
+          "history"
+        ],
+        "summary": "Get User History",
+        "description": "Retrieve paginated list of served predictions for the authenticated user.",
+        "operationId": "get_user_history_api_history_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HistoryItem"
+                  },
+                  "title": "Response Get User History Api History Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profile": {
+      "get": {
+        "tags": [
+          "profile"
+        ],
+        "summary": "Get Profile",
+        "description": "Retrieve user investment preferences.",
+        "operationId": "get_profile_api_profile_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "profile"
+        ],
+        "summary": "Update Profile",
+        "description": "Update user investment profile.",
+        "operationId": "update_profile_api_profile_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfilePayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/data": {
+      "delete": {
+        "tags": [
+          "profile"
+        ],
+        "summary": "Delete My Data",
+        "description": "Permanently delete user account and uploaded documents, and pseudonymise prediction records.\n\nRequires explicit confirmation payload {\"confirmation\": \"DELETE\"}.",
+        "operationId": "delete_my_data_api_me_data_delete",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteDataRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Delete My Data Api Me Data Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/calibration": {
+      "get": {
+        "tags": [
+          "calibration"
+        ],
+        "summary": "Get Calibration Metrics",
+        "description": "Retrieve calibration-curve bins and Brier score over time.\n\nPublic across all logged-in users; aggregates resolved predictions.",
+        "operationId": "get_calibration_metrics_api_calibration_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalibrationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/health": {
       "get": {
         "summary": "Health Check",
@@ -365,6 +670,108 @@
   },
   "components": {
     "schemas": {
+      "Body_upload_document_api_uploads_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "description": "Research document (PDF only)"
+          },
+          "consent": {
+            "type": "boolean",
+            "title": "Consent",
+            "description": "Required consent that document will be processed for analysis"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file",
+          "consent"
+        ],
+        "title": "Body_upload_document_api_uploads_post"
+      },
+      "BrierPoint": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "title": "Date"
+          },
+          "brier_score": {
+            "type": "number",
+            "title": "Brier Score"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "date",
+          "brier_score"
+        ],
+        "title": "BrierPoint",
+        "description": "Historical Brier score observation."
+      },
+      "CalibrationBin": {
+        "properties": {
+          "bin_center": {
+            "type": "number",
+            "title": "Bin Center"
+          },
+          "predicted_avg": {
+            "type": "number",
+            "title": "Predicted Avg"
+          },
+          "empirical_frequency": {
+            "type": "number",
+            "title": "Empirical Frequency"
+          },
+          "sample_count": {
+            "type": "integer",
+            "title": "Sample Count"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "bin_center",
+          "predicted_avg",
+          "empirical_frequency",
+          "sample_count"
+        ],
+        "title": "CalibrationBin",
+        "description": "Reliability curve probability bin."
+      },
+      "CalibrationResponse": {
+        "properties": {
+          "bins": {
+            "items": {
+              "$ref": "#/components/schemas/CalibrationBin"
+            },
+            "type": "array",
+            "title": "Bins"
+          },
+          "brier_history": {
+            "items": {
+              "$ref": "#/components/schemas/BrierPoint"
+            },
+            "type": "array",
+            "title": "Brier History"
+          },
+          "overall_brier_score": {
+            "type": "number",
+            "title": "Overall Brier Score"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "bins",
+          "brier_history",
+          "overall_brier_score"
+        ],
+        "title": "CalibrationResponse",
+        "description": "Model calibration curve and Brier score over time."
+      },
       "ConfidenceInterval": {
         "properties": {
           "lower": {
@@ -384,6 +791,21 @@
         ],
         "title": "ConfidenceInterval",
         "description": "Lower and upper confidence intervals."
+      },
+      "DeleteDataRequest": {
+        "properties": {
+          "confirmation": {
+            "type": "string",
+            "title": "Confirmation"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "confirmation"
+        ],
+        "title": "DeleteDataRequest",
+        "description": "Confirmation payload requiring exact string 'DELETE'."
       },
       "FactorContribution": {
         "properties": {
@@ -423,6 +845,60 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "HistoryItem": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "ticker": {
+            "type": "string",
+            "title": "Ticker"
+          },
+          "probability": {
+            "type": "number",
+            "title": "Probability"
+          },
+          "decision_label": {
+            "type": "string",
+            "title": "Decision Label"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version"
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "ticker",
+          "probability",
+          "decision_label",
+          "model_version",
+          "outcome",
+          "created_at"
+        ],
+        "title": "HistoryItem",
+        "description": "User prediction history item."
+      },
       "LoginRequest": {
         "properties": {
           "email": {
@@ -443,6 +919,63 @@
         ],
         "title": "LoginRequest",
         "description": "User login payload."
+      },
+      "ProfilePayload": {
+        "properties": {
+          "risk_level": {
+            "$ref": "#/components/schemas/RiskLevel",
+            "default": "moderate"
+          },
+          "investment_horizon_months": {
+            "type": "integer",
+            "enum": [
+              3,
+              6,
+              12
+            ],
+            "title": "Investment Horizon Months",
+            "default": 6
+          },
+          "sector_exclusions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sector Exclusions"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ProfilePayload",
+        "description": "User investment profile payload."
+      },
+      "ProfileResponse": {
+        "properties": {
+          "risk_level": {
+            "type": "string",
+            "title": "Risk Level"
+          },
+          "investment_horizon_months": {
+            "type": "integer",
+            "title": "Investment Horizon Months"
+          },
+          "sector_exclusions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sector Exclusions"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "risk_level",
+          "investment_horizon_months",
+          "sector_exclusions"
+        ],
+        "title": "ProfileResponse",
+        "description": "User profile response."
       },
       "QuantReportResponse": {
         "properties": {
@@ -522,6 +1055,16 @@
         "title": "RegisterRequest",
         "description": "User registration payload."
       },
+      "RiskLevel": {
+        "type": "string",
+        "enum": [
+          "conservative",
+          "moderate",
+          "aggressive"
+        ],
+        "title": "RiskLevel",
+        "description": "User risk tolerance tiers."
+      },
       "ScenarioDetail": {
         "properties": {
           "return_pct": {
@@ -572,6 +1115,43 @@
         ],
         "title": "TickerInfo",
         "description": "Ticker item returned for autocomplete and universe lookups."
+      },
+      "UploadResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "original_filename": {
+            "type": "string",
+            "title": "Original Filename"
+          },
+          "file_size_bytes": {
+            "type": "integer",
+            "title": "File Size Bytes"
+          },
+          "page_count": {
+            "type": "integer",
+            "title": "Page Count"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "original_filename",
+          "file_size_bytes",
+          "page_count",
+          "created_at"
+        ],
+        "title": "UploadResponse",
+        "description": "Metadata response for an uploaded research document."
       },
       "UserResponse": {
         "properties": {
