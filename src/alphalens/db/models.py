@@ -67,9 +67,7 @@ class User(Base):
     pseudonym: Mapped["UserPseudonym | None"] = relationship(
         "UserPseudonym", back_populates="user", uselist=False, cascade="all, delete-orphan"
     )
-    consents: Mapped[list["ConsentRecord"]] = relationship(
-        "ConsentRecord", back_populates="user", cascade="all, delete-orphan"
-    )
+    consents: Mapped[list["ConsentRecord"]] = relationship("ConsentRecord", back_populates="user")
 
 
 class UserPseudonym(Base):
@@ -178,15 +176,16 @@ class ConsentRecord(Base):
     __tablename__ = "consent_records"
 
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        Uuid, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        Uuid, ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True
     )
+    pseudo_id: Mapped[uuid.UUID | None] = mapped_column(Uuid, index=True, nullable=True)
     notice_version: Mapped[str] = mapped_column(String(32), nullable=False)
     consent_given_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(UTC), nullable=False
     )
 
-    user: Mapped[User] = relationship("User", back_populates="consents")
+    user: Mapped[User | None] = relationship("User", back_populates="consents")
 
 
 class AuditLog(Base):

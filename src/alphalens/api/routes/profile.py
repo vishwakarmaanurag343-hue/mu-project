@@ -13,6 +13,7 @@ from alphalens.api.security import verify_csrf, verify_password
 from alphalens.config import get_settings
 from alphalens.db.models import (
     AuditLog,
+    ConsentRecord,
     PendingDeletion,
     RiskLevel,
     UploadRecord,
@@ -189,7 +190,17 @@ async def delete_my_data(
         )
     )
 
-    # b. Delete user from DB (cascades pseudonym, profile, refresh_tokens, consents, uploads)
+    # b. ConsentRecord pseudonymisation: replace user_id with pseudo_id as proof of consent
+    db.execute(
+        update(ConsentRecord)
+        .where(ConsentRecord.user_id == user_id)
+        .values(
+            user_id=None,
+            pseudo_id=pseudo_id,
+        )
+    )
+
+    # c. Delete user from DB (cascades pseudonym, profile, refresh_tokens, uploads)
     db.delete(user)
     db.commit()
 

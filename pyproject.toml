@@ -47,6 +47,7 @@ select = ["E", "F", "I", "B", "UP", "S", "N", "SIM", "RUF"]
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101", "S105", "S106", "E501"]   # allow assert, test passwords, long test docstrings
 "src/alphalens/api/**" = ["B008"]  # allow FastAPI Depends() in parameter defaults
+"alembic/**" = ["E402", "E501"]  # allow late imports and auto-generated migration lines
 
 [tool.mypy]
 strict = true
