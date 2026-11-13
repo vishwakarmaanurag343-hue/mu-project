@@ -1,4 +1,4 @@
-.PHONY: setup lint test check
+.PHONY: setup lint test check api web
 
 setup:
 	uv sync
@@ -13,3 +13,9 @@ test:
 check: lint test
 	uv run bandit -c pyproject.toml -r src
 	uv run pip-audit
+
+api:
+	uv run uvicorn alphalens.api.main:app --reload --host 127.0.0.1 --port 8000
+
+web:
+	cd frontend && npm run dev

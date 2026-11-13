@@ -21,13 +21,13 @@ def test_settings_defaults() -> None:
 
 def test_settings_secret_masking() -> None:
     """Sensitive settings must never expose raw secrets in string representations."""
-    secret_val = "super-secret-key-12345"
-    settings = Settings(llm_api_key=SecretStr(secret_val))
+    dummy_key = "dummy-redaction-test-value-12345"
+    settings = Settings(llm_api_key=SecretStr(dummy_key))
 
-    assert secret_val not in str(settings.llm_api_key)
-    assert secret_val not in repr(settings.llm_api_key)
+    assert dummy_key not in str(settings.llm_api_key)
+    assert dummy_key not in repr(settings.llm_api_key)
     assert settings.llm_api_key is not None
-    assert settings.llm_api_key.get_secret_value() == secret_val
+    assert settings.llm_api_key.get_secret_value() == dummy_key
 
 
 def test_get_settings_cached() -> None:
