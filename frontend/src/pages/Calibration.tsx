@@ -40,7 +40,7 @@ export function CalibrationPage(): React.JSX.Element {
   });
 
   if (isLoading || !data) {
-    return <div className="p-8 text-center text-xs text-slate-500">Loading calibration analytics...</div>;
+    return <div className="p-8 text-center text-xs text-slate-400">Loading calibration analytics...</div>;
   }
 
   // Prepare reliability diagram data comparing forecast to empirical win rate
@@ -51,85 +51,93 @@ export function CalibrationPage(): React.JSX.Element {
   }));
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-8">
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900">Model Calibration & Reliability</h2>
-        <p className="text-xs text-slate-500 mt-1">
-          Empirical evaluation of predicted outperformance probabilities against historical realized outcomes (Nifty 100).
+    <div className="min-h-screen bg-[#070b12] text-slate-100 p-6 md:p-10 space-y-8 max-w-6xl mx-auto">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#121c33] via-[#0e1628] to-[#12182b] border border-white/10 p-8 shadow-2xl">
+        <h1 className="text-3xl font-black text-white tracking-tight">
+          AlphaLens Reliability & Calibration Lab
+        </h1>
+        <p className="text-slate-400 text-sm mt-2 max-w-2xl leading-relaxed">
+          Empirical walk-forward calibration curves, Brier skill evolution over time, and statistical score diagnostics across all 119 monthly rebalance folds.
         </p>
       </div>
 
-      {/* Brier Score Metric Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-            Model Brier Score
+      {/* Summary Score Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="rounded-2xl border border-white/10 bg-[#0d1322]/90 p-5 backdrop-blur-xl">
+          <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Model Brier Score</div>
+          <div className="text-3xl font-black text-white mt-1">
+            {data.overall_brier_score.toFixed(4)}
           </div>
-          <div className="text-2xl font-black text-slate-900 mt-1">
-            {data.overall_brier_score.toFixed(3)}
-          </div>
-          <div className="text-[10px] text-slate-500 mt-1">
-            Mean squared error of predictions. Lower is better.
-          </div>
+          <div className="text-[10px] text-slate-500 mt-1">Lower is better</div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-            Base-Rate (Climatology) Baseline
+        <div className="rounded-2xl border border-white/10 bg-[#0d1322]/90 p-5 backdrop-blur-xl">
+          <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Base Rate Baseline</div>
+          <div className="text-3xl font-black text-slate-300 mt-1">
+            {data.baseline_brier_score.toFixed(4)}
           </div>
-          <div className="text-2xl font-black text-slate-900 mt-1">
-            {data.baseline_brier_score.toFixed(3)}
-          </div>
-          <div className="text-[10px] text-slate-500 mt-1">
-            Naive sample base-rate (coin flip ref = {data.coin_flip_brier_score.toFixed(3)}).
-          </div>
+          <div className="text-[10px] text-slate-500 mt-1">Trailing historical rate</div>
         </div>
 
-        <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-5 shadow-sm">
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-blue-700">
-            Brier Skill Score (BSS)
+        <div className="rounded-2xl border border-white/10 bg-[#0d1322]/90 p-5 backdrop-blur-xl">
+          <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Brier Skill Score (BSS)</div>
+          <div className="text-3xl font-black text-cyan-400 mt-1">
+            {data.brier_skill_score >= 0
+              ? `+${data.brier_skill_score.toFixed(4)}`
+              : data.brier_skill_score.toFixed(4)}
           </div>
-          <div className="text-2xl font-black text-blue-900 mt-1">
-            {data.brier_skill_score > 0 ? `+${(data.brier_skill_score * 100).toFixed(1)}%` : `${(data.brier_skill_score * 100).toFixed(1)}%`}
-          </div>
-          <div className="text-[10px] text-blue-600 mt-1">
-            Skill over baseline: 1 - (Brier_model / Brier_baseline).
-          </div>
+          <div className="text-[10px] text-slate-500 mt-1">≈ 0.0 (Relative rank signal)</div>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-[#0d1322]/90 p-5 backdrop-blur-xl">
+          <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Evaluated Samples</div>
+          <div className="text-3xl font-black text-emerald-400 mt-1">5,332</div>
+          <div className="text-[10px] text-slate-500 mt-1">Common out-of-sample folds</div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Reliability Diagram */}
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 mb-2">
-            Reliability Diagram
+      {/* Charts Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Reliability Curve */}
+        <div className="rounded-3xl border border-white/10 bg-[#0d1322]/90 p-6 lg:p-8 backdrop-blur-xl shadow-2xl">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-white mb-2 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
+            Empirical Reliability Diagram (10 Bins)
           </h3>
-          <p className="text-xs text-slate-500 mb-4">
-            Forecasted probability vs realized empirical outperformance frequency.
+          <p className="text-xs text-slate-400 mb-6">
+            Mean predicted probability vs observed empirical outperformance win-rate.
           </p>
-          <div className="h-64 w-full">
+          <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={reliabilityData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="bin" tick={{ fontSize: 11 }} />
-                <YAxis domain={[0, 1]} tickFormatter={(v: number) => `${(v * 100).toFixed(0)}%`} tick={{ fontSize: 11 }} />
-                <Tooltip formatter={(value: number) => `${(Number(value) * 100).toFixed(1)}%`} />
-                <Legend wrapperStyle={{ fontSize: 11 }} />
+              <LineChart data={reliabilityData} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+                <XAxis dataKey="bin" stroke="#94a3b8" tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                <YAxis stroke="#94a3b8" tick={{ fontSize: 11, fill: '#94a3b8' }} domain={[0, 1]} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#0d1322',
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    borderRadius: '12px',
+                    color: '#fff',
+                    fontSize: '12px',
+                  }}
+                />
+                <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
                 <Line
                   type="monotone"
                   dataKey="ideal"
-                  stroke="#94a3b8"
-                  strokeDasharray="5 5"
+                  stroke="#64748b"
+                  strokeDasharray="4 4"
                   name="Perfect Calibration"
                   dot={false}
                 />
                 <Line
                   type="monotone"
                   dataKey="empirical"
-                  stroke="#2563eb"
-                  strokeWidth={2}
-                  name="AlphaLens Model"
-                  dot={{ r: 3 }}
+                  stroke="#06b6d4"
+                  strokeWidth={2.5}
+                  name="Model (bt-1.0)"
+                  dot={{ r: 4, fill: '#06b6d4' }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -137,28 +145,36 @@ export function CalibrationPage(): React.JSX.Element {
         </div>
 
         {/* Brier Score Over Time */}
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 mb-2">
-            Brier Score Trajectory
+        <div className="rounded-3xl border border-white/10 bg-[#0d1322]/90 p-6 lg:p-8 backdrop-blur-xl shadow-2xl">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-white mb-2 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-blue-400"></span>
+            Brier Score Trajectory Over Time
           </h3>
-          <p className="text-xs text-slate-500 mb-4">
-            Longitudinal calibration stability with coin-flip reference line.
+          <p className="text-xs text-slate-400 mb-6">
+            Trailing fold-by-fold Brier score progression across 2017–2026 out-of-sample window.
           </p>
-          <div className="h-64 w-full">
+          <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data.brier_history}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" tick={{ fontSize: 11 }} />
-                <YAxis domain={[0.1, 0.28]} tick={{ fontSize: 11 }} />
-                <Tooltip />
-                <Legend wrapperStyle={{ fontSize: 11 }} />
+              <LineChart data={data.brier_history} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+                <XAxis dataKey="date" stroke="#94a3b8" tick={{ fontSize: 10, fill: '#94a3b8' }} />
+                <YAxis stroke="#94a3b8" tick={{ fontSize: 11, fill: '#94a3b8' }} domain={[0, 0.5]} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#0d1322',
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    borderRadius: '12px',
+                    color: '#fff',
+                    fontSize: '12px',
+                  }}
+                />
                 <Line
                   type="monotone"
                   dataKey="brier_score"
-                  stroke="#10b981"
+                  stroke="#3b82f6"
                   strokeWidth={2}
-                  name="Rolling Brier Score"
-                  dot={{ r: 3 }}
+                  name="Brier Score"
+                  dot={false}
                 />
               </LineChart>
             </ResponsiveContainer>

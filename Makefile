@@ -19,3 +19,11 @@ api:
 
 web:
 	cd frontend && npm run dev
+
+demo:
+	uv run python scripts/download_prices.py
+	uv run python scripts/build_dataset.py
+	uv run python scripts/run_backtest.py
+	uv run python scripts/precompute.py
+	uv run uvicorn alphalens.api.main:app --host 127.0.0.1 --port 8000
+

@@ -1,13 +1,16 @@
 [project]
 name = "alphalens"
-version = "0.1.0"
+version = "1.0.0"
 description = "Calibrated, evidence-cited equity research assistant (NSE)"
 requires-python = ">=3.11"
 dependencies = [
     "alembic>=1.14.0",
     "argon2-cffi>=23.1.0",
+    "diskcache==5.6.3",
     "email-validator>=2.0",
     "fastapi>=0.115.0",
+    "httpx>=0.27.0",
+    "pandas==2.2.3",
     "pydantic>=2.7",
     "pydantic-settings>=2.3",
     "pyjwt>=2.10.1",
@@ -18,6 +21,9 @@ dependencies = [
     "sse-starlette>=2.1.0",
     "structlog>=24.1",
     "uvicorn[standard]>=0.32.0",
+    "yfinance==1.8.0",
+    "scikit-learn==1.9.1",
+    "matplotlib==3.11.2",
 ]
 
 [dependency-groups]
@@ -31,6 +37,8 @@ dev = [
     "pip-audit>=2.7",
     "pre-commit>=3.7",
     "httpx>=0.27.0",
+    "respx==0.23.1",
+    "pandas-stubs>=2.2",
 ]
 
 [build-system]
@@ -43,6 +51,7 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "S", "N", "SIM", "RUF"]
+ignore = ["N818", "S311", "E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101", "S105", "S106", "E501"]   # allow assert, test passwords, long test docstrings
@@ -52,6 +61,14 @@ select = ["E", "F", "I", "B", "UP", "S", "N", "SIM", "RUF"]
 [tool.mypy]
 strict = true
 python_version = "3.11"
+
+[[tool.mypy.overrides]]
+module = [
+    "sklearn.*",
+    "scipy.*",
+    "yfinance.*",
+]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -55,100 +55,123 @@ export function UploadPage(): React.JSX.Element {
   });
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
-        <h2 className="text-xl font-bold text-slate-900">Upload Research Documents</h2>
-        <p className="text-xs text-slate-500">
-          Upload corporate filings, transcripts, or broker notes (PDF only, max 20 MB, 100 pages).
-        </p>
-
-        {/* Privacy Notice */}
-        <div className="rounded-lg border border-blue-100 bg-blue-50 p-4 text-xs text-blue-900 leading-relaxed">
-          <p>
-            <strong>Privacy Notice:</strong> All uploaded documents are parsed in an isolated sandbox.
-            By proceeding, you explicitly authorize analysis of this document by the calibrated LLM
-            reasoning engine. Data already processed by the LLM provider is subject to their retention policy.
-          </p>
+    <div className="min-h-screen bg-[#070b12] text-slate-100 p-6 md:p-10">
+      <div className="max-w-5xl mx-auto space-y-8">
+        {/* Preview Release Banner */}
+        <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4 text-xs font-medium text-amber-300 shadow-xl backdrop-blur-md flex items-center gap-3">
+          <span className="font-bold uppercase tracking-wider text-[10px] bg-amber-500/20 border border-amber-500/30 text-amber-300 px-2.5 py-1 rounded-full">
+            Preview
+          </span>
+          <span>Document analysis: preview, not enabled in this release</span>
         </div>
 
-        {error && (
-          <div className="rounded-md bg-red-50 border border-red-200 p-3 text-xs text-red-700">
-            {error}
-          </div>
-        )}
-        {success && (
-          <div className="rounded-md bg-emerald-50 border border-emerald-200 p-3 text-xs text-emerald-700">
-            {success}
-          </div>
-        )}
-
-        <div className="space-y-4 pt-2">
-          <div>
-            <input
-              type="file"
-              accept=".pdf,application/pdf"
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
-              className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer"
-            />
+        {/* Upload Container */}
+        <div className="rounded-3xl border border-white/10 bg-[#0d1322]/90 backdrop-blur-xl p-8 shadow-2xl space-y-6">
+          <div className="border-b border-white/5 pb-4">
+            <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-2.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+              Upload Research Documents
+            </h2>
+            <p className="text-xs text-slate-400 mt-1">
+              Upload corporate filings, transcripts, or broker notes (PDF only, max 20 MB, 100 pages).
+            </p>
           </div>
 
-          {/* Consent Checkbox */}
-          <div className="flex items-start gap-2">
-            <input
-              id="consent-checkbox"
-              type="checkbox"
-              checked={consent}
-              onChange={(e) => setConsent(e.target.checked)}
-              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
-            />
-            <label htmlFor="consent-checkbox" className="text-xs text-slate-700 select-none cursor-pointer">
-              My document will be sent to an external LLM provider for analysis. Data already processed by the LLM provider is subject to their retention policy.
-            </label>
+          {/* Privacy Notice Card */}
+          <div className="rounded-2xl border border-blue-500/20 bg-blue-500/5 p-5 text-xs text-blue-200 leading-relaxed backdrop-blur-md space-y-1.5">
+            <div className="font-bold text-cyan-400 flex items-center gap-1.5">
+              <span>🛡️ DPDP Privacy & Sandbox Isolation Notice</span>
+            </div>
+            <p className="text-slate-300">
+              All uploaded documents are parsed in a hardened, memory-bounded subprocess sandbox.
+              By proceeding, you explicitly authorize analysis of this document by the calibrated LLM
+              reasoning engine. Data already processed by the LLM provider is subject to their retention policy.
+            </p>
           </div>
 
-          <button
-            type="button"
-            disabled={!file || !consent || uploadMutation.isPending}
-            onClick={() => uploadMutation.mutate()}
-            className="rounded bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            {uploadMutation.isPending ? 'Uploading & Verifying...' : 'Upload Document'}
-          </button>
+          {error && (
+            <div className="rounded-xl bg-rose-500/10 border border-rose-500/20 p-4 text-xs text-rose-300">
+              {error}
+            </div>
+          )}
+          {success && (
+            <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-xs text-emerald-300">
+              {success}
+            </div>
+          )}
+
+          <div className="space-y-6 pt-2">
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                Select PDF File
+              </label>
+              <input
+                type="file"
+                accept=".pdf,application/pdf"
+                onChange={(e) => setFile(e.target.files?.[0] || null)}
+                className="block w-full text-xs text-slate-400 file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-600/20 file:text-cyan-400 hover:file:bg-blue-600/30 file:border-blue-500/30 file:border cursor-pointer bg-[#141d33] rounded-2xl p-2 border border-white/10"
+              />
+            </div>
+
+            {/* Consent Checkbox */}
+            <div className="flex items-start gap-3 rounded-2xl border border-white/5 bg-[#121829]/60 p-4">
+              <input
+                id="consent-checkbox"
+                type="checkbox"
+                checked={consent}
+                onChange={(e) => setConsent(e.target.checked)}
+                className="mt-0.5 h-4 w-4 rounded border-white/20 bg-[#141d33] text-cyan-500 focus:ring-cyan-500/30 cursor-pointer"
+              />
+              <label htmlFor="consent-checkbox" className="text-xs text-slate-300 select-none cursor-pointer leading-relaxed">
+                My document will be sent to an external LLM provider for analysis. Data already processed by the LLM provider is subject to their retention policy.
+              </label>
+            </div>
+
+            <button
+              type="button"
+              disabled={!file || !consent || uploadMutation.isPending}
+              onClick={() => uploadMutation.mutate()}
+              className="rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 px-6 py-3 text-xs font-bold text-white shadow-glow-blue hover:from-blue-500 hover:to-cyan-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            >
+              {uploadMutation.isPending ? 'Uploading & Verifying...' : 'Upload Document'}
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* Uploads List */}
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 mb-4">
-          Your Uploaded Files
-        </h3>
-        {isLoading && <p className="text-xs text-slate-500">Loading files...</p>}
-        {uploads && uploads.length === 0 && (
-          <p className="text-xs text-slate-500">No documents uploaded yet.</p>
-        )}
-        {uploads && uploads.length > 0 && (
-          <div className="divide-y divide-slate-100 border border-slate-200 rounded-lg overflow-hidden">
-            {uploads.map((doc) => (
-              <div key={doc.id} className="p-3.5 flex items-center justify-between text-xs">
-                <div>
-                  <div className="font-semibold text-slate-800">{doc.original_filename}</div>
-                  <div className="text-slate-400 text-[11px]">
-                    {(doc.file_size_bytes / 1024).toFixed(1)} KB • {doc.page_count} pages •{' '}
-                    {new Date(doc.created_at).toLocaleDateString()}
+        {/* Uploads List */}
+        <div className="rounded-3xl border border-white/10 bg-[#0d1322]/90 backdrop-blur-xl p-8 shadow-2xl">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-slate-200 mb-4 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-blue-400"></span>
+            Your Uploaded Research Files
+          </h3>
+          {isLoading && <p className="text-xs text-slate-400">Loading files...</p>}
+          {uploads && uploads.length === 0 && (
+            <p className="text-xs text-slate-400">No documents uploaded yet.</p>
+          )}
+          {uploads && uploads.length > 0 && (
+            <div className="divide-y divide-white/5 border border-white/10 rounded-2xl overflow-hidden bg-[#121829]/60">
+              {uploads.map((doc) => (
+                <div key={doc.id} className="p-4 flex items-center justify-between text-xs hover:bg-white/5 transition-colors">
+                  <div>
+                    <div className="font-semibold text-white">{doc.original_filename}</div>
+                    <div className="text-slate-400 text-[11px] mt-0.5">
+                      {(doc.file_size_bytes / 1024).toFixed(1)} KB • {doc.page_count} pages •{' '}
+                      {new Date(doc.created_at).toLocaleDateString()}
+                    </div>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => deleteMutation.mutate(doc.id)}
+                    disabled={deleteMutation.isPending}
+                    className="rounded-xl px-3 py-1.5 text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 text-xs font-medium transition-all"
+                  >
+                    Delete
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => deleteMutation.mutate(doc.id)}
-                  disabled={deleteMutation.isPending}
-                  className="rounded px-2.5 py-1 text-red-600 hover:bg-red-50 text-xs font-medium"
-                >
-                  Delete
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ from alphalens.api.deps import get_current_user, get_db
 from alphalens.api.main import create_app
 from alphalens.api.routes.auth import limiter as auth_limiter
 from alphalens.api.routes.reports import limiter as reports_limiter
-from alphalens.db.models import Base, PredictionLog, User, UserRole
+from alphalens.db.models import Base, CanonicalPrediction, PredictionLog, User, UserRole
 
 # In-memory test DB
 test_engine = create_engine(
@@ -73,6 +73,18 @@ def auth_client(test_user: User) -> TestClient:
 
 def test_quant_endpoint_latency_and_decoupling(auth_client: TestClient) -> None:
     """Quant endpoint responds in < 300 ms, uses only precomputed metrics, and logs prediction."""
+    # Seed canonical row in test DB
+    with TestingSessionLocal() as db:
+        canonical = CanonicalPrediction(
+            ticker="RELIANCE.NS",
+            as_of="2026-11-12",
+            probability=0.5562,
+            outcome=None,
+            model_version="1.0",
+        )
+        db.add(canonical)
+        db.commit()
+
     start_time = time.perf_counter()
     res = auth_client.get("/api/reports/RELIANCE.NS/quant")
     elapsed_ms = (time.perf_counter() - start_time) * 1000
@@ -84,8 +96,8 @@ def test_quant_endpoint_latency_and_decoupling(auth_client: TestClient) -> None:
 
     data = res.json()
     assert data["ticker"] == "RELIANCE.NS"
-    assert data["probability"] == 0.68
-    assert data["decision_label"] == "Overweight"
+    assert data["probability"] == 0.5562
+    assert data["decision_label"] == "Top quintile (relative strength)"
     assert "factor_contributions" in data
     assert len(data["factor_contributions"]) > 0
     assert "scenarios" in data
@@ -94,8 +106,33 @@ def test_quant_endpoint_latency_and_decoupling(auth_client: TestClient) -> None:
     with TestingSessionLocal() as db:
         log_entry = db.scalar(select(PredictionLog).where(PredictionLog.ticker == "RELIANCE.NS"))
         assert log_entry is not None
-        assert log_entry.probability == 0.68
-        assert log_entry.decision_label == "Overweight"
+        assert log_entry.probability == 0.5562
+        assert log_entry.decision_label == "Top quintile (relative strength)"
+
+
+def test_quant_endpoint_returns_model_probability_for_seeded_row(auth_client: TestClient) -> None:
+    """Test that quant endpoint returns the model's exact probability for a seeded canonical prediction."""
+    with TestingSessionLocal() as db:
+        canonical = CanonicalPrediction(
+            ticker="INFY.NS",
+            as_of="2026-11-12",
+            probability=0.6125,
+            outcome=None,
+            model_version="1.0",
+        )
+        db.add(canonical)
+        db.commit()
+
+    res = auth_client.get("/api/reports/INFY.NS/quant")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["ticker"] == "INFY.NS"
+    assert data["probability"] == 0.6125
+    assert data["decision_label"] == "Top quintile (relative strength)"
+    assert data["as_of"] == "2026-11-12"
+    assert "bull" in data["scenarios"]
+    assert "base" in data["scenarios"]
+    assert "bear" in data["scenarios"]
 
 
 def test_unauthenticated_requests_return_401() -> None:
@@ -111,8 +148,46 @@ def test_unauthenticated_requests_return_401() -> None:
     assert res_stream.status_code == 401
 
 
-def test_evidence_stream_verified_claims_and_domain_allowlist(auth_client: TestClient) -> None:
+def test_evidence_stream_disabled_when_no_llm_configured(auth_client: TestClient) -> None:
+    """When LLM is not configured, evidence stream sends status message and done."""
+    res = auth_client.get("/api/reports/RELIANCE.NS/evidence/stream")
+    assert res.status_code == 200
+    assert "text/event-stream" in res.headers["content-type"]
+
+    raw_text = res.text
+    blocks = raw_text.strip().split("\r\n\r\n" if "\r\n\r\n" in raw_text else "\n\n")
+    events: list[dict[str, str]] = []
+
+    for block in blocks:
+        if not block.strip():
+            continue
+        event_name = ""
+        data_str = ""
+        for line in block.splitlines():
+            if line.startswith("event: "):
+                event_name = line.replace("event: ", "").strip()
+            elif line.startswith("data: "):
+                data_str = line.replace("data: ", "").strip()
+        if event_name and data_str:
+            events.append({"event": event_name, "data": data_str})
+
+    event_names = [e["event"] for e in events]
+    assert event_names == ["status", "done"]
+    status_data = json.loads(events[0]["data"])
+    assert status_data["message"] == "LLM evidence layer not enabled in this release"
+
+
+def test_evidence_stream_verified_claims_and_domain_allowlist(
+    auth_client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
     """Evidence stream emits status, claims, and done; filters unverified claims & untrusted URLs."""
+    from pydantic import SecretStr
+
+    from alphalens.config import get_settings
+
+    settings = get_settings()
+    monkeypatch.setattr(settings, "llm_api_key", SecretStr("test-key"))
+
     res = auth_client.get("/api/reports/RELIANCE.NS/evidence/stream")
     assert res.status_code == 200
     assert "text/event-stream" in res.headers["content-type"]

@@ -30,6 +30,25 @@ limiter = Limiter(key_func=get_remote_address)
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
+@router.get("/csrf", response_model=dict[str, str])
+async def get_csrf_token(response: Response, request: Request) -> dict[str, str]:
+    """Issue or retrieve double-submit CSRF cookie for initial unauthenticated page loads."""
+    existing_cookie = request.cookies.get("csrf_token")
+    token = existing_cookie or generate_csrf_token()
+
+    settings = get_settings()
+    response.set_cookie(
+        key="csrf_token",
+        value=token,
+        max_age=settings.refresh_token_expire_days * 86400,
+        httponly=False,
+        secure=settings.app_env == "prod",
+        samesite="lax",
+        path="/",
+    )
+    return {"csrf_token": token}
+
+
 # Request & Response Schemas
 class RegisterRequest(BaseModel):
     """User registration payload."""

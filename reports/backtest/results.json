@@ -1,0 +1,2282 @@
+{
+  "metadata": {
+    "start_date": "2017-01-31",
+    "end_date": "2026-11-12",
+    "n_months": 119,
+    "generated_at": "2026-11-13 22:23:02"
+  },
+  "model": {
+    "n_samples": 5332,
+    "brier_score": 0.2492,
+    "baseline_brier": 0.2479,
+    "brier_skill_score": -0.0051,
+    "log_loss": 0.692,
+    "roc_auc": 0.5142,
+    "calibration_table": [
+      {
+        "bin_center": 0.05,
+        "predicted_avg": 0.05,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.15,
+        "predicted_avg": 0.15,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.25,
+        "predicted_avg": 0.25,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.35,
+        "predicted_avg": 0.3835,
+        "observed_rate": 0.7,
+        "count": 10
+      },
+      {
+        "bin_center": 0.45,
+        "predicted_avg": 0.4761,
+        "observed_rate": 0.5289,
+        "count": 571
+      },
+      {
+        "bin_center": 0.55,
+        "predicted_avg": 0.5484,
+        "observed_rate": 0.5604,
+        "count": 3917
+      },
+      {
+        "bin_center": 0.65,
+        "predicted_avg": 0.6345,
+        "observed_rate": 0.5691,
+        "count": 752
+      },
+      {
+        "bin_center": 0.75,
+        "predicted_avg": 0.7277,
+        "observed_rate": 0.4444,
+        "count": 72
+      },
+      {
+        "bin_center": 0.85,
+        "predicted_avg": 0.8181,
+        "observed_rate": 0.3,
+        "count": 10
+      },
+      {
+        "bin_center": 0.95,
+        "predicted_avg": 0.95,
+        "observed_rate": 0.0,
+        "count": 0
+      }
+    ],
+    "economic": {
+      "monthly_spreads": [
+        {
+          "date": "2017-01-31",
+          "top_quintile_excess": -0.0349,
+          "bottom_quintile_excess": 0.1542,
+          "spread": -0.1891
+        },
+        {
+          "date": "2017-02-28",
+          "top_quintile_excess": 0.2065,
+          "bottom_quintile_excess": -0.0918,
+          "spread": 0.2984
+        },
+        {
+          "date": "2017-03-31",
+          "top_quintile_excess": 0.1159,
+          "bottom_quintile_excess": -0.0218,
+          "spread": 0.1377
+        },
+        {
+          "date": "2017-04-28",
+          "top_quintile_excess": 0.1225,
+          "bottom_quintile_excess": -0.0376,
+          "spread": 0.1601
+        },
+        {
+          "date": "2017-05-31",
+          "top_quintile_excess": 0.3104,
+          "bottom_quintile_excess": 0.0665,
+          "spread": 0.2439
+        },
+        {
+          "date": "2017-06-30",
+          "top_quintile_excess": 0.1283,
+          "bottom_quintile_excess": 0.0461,
+          "spread": 0.0822
+        },
+        {
+          "date": "2017-07-31",
+          "top_quintile_excess": 0.0593,
+          "bottom_quintile_excess": 0.0109,
+          "spread": 0.0484
+        },
+        {
+          "date": "2017-08-31",
+          "top_quintile_excess": 0.0525,
+          "bottom_quintile_excess": 0.1214,
+          "spread": -0.0689
+        },
+        {
+          "date": "2017-09-29",
+          "top_quintile_excess": 0.1101,
+          "bottom_quintile_excess": 0.0044,
+          "spread": 0.1057
+        },
+        {
+          "date": "2017-10-31",
+          "top_quintile_excess": 0.0371,
+          "bottom_quintile_excess": -0.0181,
+          "spread": 0.0552
+        },
+        {
+          "date": "2017-11-30",
+          "top_quintile_excess": -0.0747,
+          "bottom_quintile_excess": 0.0661,
+          "spread": -0.1408
+        },
+        {
+          "date": "2017-12-29",
+          "top_quintile_excess": -0.0686,
+          "bottom_quintile_excess": 0.0391,
+          "spread": -0.1078
+        },
+        {
+          "date": "2018-01-31",
+          "top_quintile_excess": -0.0219,
+          "bottom_quintile_excess": 0.0242,
+          "spread": -0.0461
+        },
+        {
+          "date": "2018-02-28",
+          "top_quintile_excess": 0.0005,
+          "bottom_quintile_excess": 0.0192,
+          "spread": -0.0186
+        },
+        {
+          "date": "2018-03-28",
+          "top_quintile_excess": -0.0639,
+          "bottom_quintile_excess": -0.0541,
+          "spread": -0.0098
+        },
+        {
+          "date": "2018-04-30",
+          "top_quintile_excess": 0.0861,
+          "bottom_quintile_excess": -0.0639,
+          "spread": 0.1501
+        },
+        {
+          "date": "2018-05-31",
+          "top_quintile_excess": 0.1105,
+          "bottom_quintile_excess": -0.1078,
+          "spread": 0.2183
+        },
+        {
+          "date": "2018-06-29",
+          "top_quintile_excess": 0.0043,
+          "bottom_quintile_excess": -0.0741,
+          "spread": 0.0784
+        },
+        {
+          "date": "2018-07-31",
+          "top_quintile_excess": 0.0614,
+          "bottom_quintile_excess": 0.0083,
+          "spread": 0.053
+        },
+        {
+          "date": "2018-08-31",
+          "top_quintile_excess": 0.0445,
+          "bottom_quintile_excess": -0.0749,
+          "spread": 0.1194
+        },
+        {
+          "date": "2018-09-28",
+          "top_quintile_excess": -0.0225,
+          "bottom_quintile_excess": -0.0034,
+          "spread": -0.0192
+        },
+        {
+          "date": "2018-10-31",
+          "top_quintile_excess": -0.0214,
+          "bottom_quintile_excess": 0.0453,
+          "spread": -0.0667
+        },
+        {
+          "date": "2018-11-30",
+          "top_quintile_excess": 0.0107,
+          "bottom_quintile_excess": -0.0252,
+          "spread": 0.0358
+        },
+        {
+          "date": "2018-12-31",
+          "top_quintile_excess": 0.0212,
+          "bottom_quintile_excess": -0.001,
+          "spread": 0.0223
+        },
+        {
+          "date": "2019-01-31",
+          "top_quintile_excess": 0.0475,
+          "bottom_quintile_excess": -0.0384,
+          "spread": 0.0859
+        },
+        {
+          "date": "2019-02-28",
+          "top_quintile_excess": 0.1155,
+          "bottom_quintile_excess": -0.0655,
+          "spread": 0.181
+        },
+        {
+          "date": "2019-03-28",
+          "top_quintile_excess": 0.1757,
+          "bottom_quintile_excess": -0.0629,
+          "spread": 0.2386
+        },
+        {
+          "date": "2019-04-30",
+          "top_quintile_excess": 0.0817,
+          "bottom_quintile_excess": -0.0614,
+          "spread": 0.143
+        },
+        {
+          "date": "2019-05-31",
+          "top_quintile_excess": 0.0234,
+          "bottom_quintile_excess": -0.0475,
+          "spread": 0.0709
+        },
+        {
+          "date": "2019-06-28",
+          "top_quintile_excess": -0.0158,
+          "bottom_quintile_excess": 0.0243,
+          "spread": -0.04
+        },
+        {
+          "date": "2019-07-31",
+          "top_quintile_excess": 0.0437,
+          "bottom_quintile_excess": 0.0889,
+          "spread": -0.0452
+        },
+        {
+          "date": "2019-08-30",
+          "top_quintile_excess": 0.0988,
+          "bottom_quintile_excess": 0.1125,
+          "spread": -0.0137
+        },
+        {
+          "date": "2019-09-30",
+          "top_quintile_excess": 0.0385,
+          "bottom_quintile_excess": -0.1235,
+          "spread": 0.1621
+        },
+        {
+          "date": "2019-10-31",
+          "top_quintile_excess": 0.0075,
+          "bottom_quintile_excess": -0.0178,
+          "spread": 0.0253
+        },
+        {
+          "date": "2019-11-29",
+          "top_quintile_excess": 0.1118,
+          "bottom_quintile_excess": -0.0066,
+          "spread": 0.1183
+        },
+        {
+          "date": "2019-12-31",
+          "top_quintile_excess": 0.1589,
+          "bottom_quintile_excess": -0.0207,
+          "spread": 0.1796
+        },
+        {
+          "date": "2020-01-31",
+          "top_quintile_excess": -0.0104,
+          "bottom_quintile_excess": 0.0612,
+          "spread": -0.0716
+        },
+        {
+          "date": "2020-02-28",
+          "top_quintile_excess": -0.0051,
+          "bottom_quintile_excess": 0.1495,
+          "spread": -0.1546
+        },
+        {
+          "date": "2020-03-31",
+          "top_quintile_excess": 0.0941,
+          "bottom_quintile_excess": 0.1542,
+          "spread": -0.0601
+        },
+        {
+          "date": "2020-04-30",
+          "top_quintile_excess": 0.0064,
+          "bottom_quintile_excess": 0.1374,
+          "spread": -0.131
+        },
+        {
+          "date": "2020-05-29",
+          "top_quintile_excess": -0.0884,
+          "bottom_quintile_excess": 0.4054,
+          "spread": -0.4938
+        },
+        {
+          "date": "2020-06-30",
+          "top_quintile_excess": -0.1079,
+          "bottom_quintile_excess": 0.2433,
+          "spread": -0.3512
+        },
+        {
+          "date": "2020-07-31",
+          "top_quintile_excess": -0.1909,
+          "bottom_quintile_excess": 0.3237,
+          "spread": -0.5145
+        },
+        {
+          "date": "2020-08-31",
+          "top_quintile_excess": -0.1572,
+          "bottom_quintile_excess": 0.2526,
+          "spread": -0.4098
+        },
+        {
+          "date": "2020-09-30",
+          "top_quintile_excess": 0.4888,
+          "bottom_quintile_excess": 0.2206,
+          "spread": 0.2682
+        },
+        {
+          "date": "2020-10-30",
+          "top_quintile_excess": 0.3089,
+          "bottom_quintile_excess": 0.1158,
+          "spread": 0.1931
+        },
+        {
+          "date": "2020-11-27",
+          "top_quintile_excess": 0.4152,
+          "bottom_quintile_excess": 0.1332,
+          "spread": 0.282
+        },
+        {
+          "date": "2020-12-31",
+          "top_quintile_excess": 0.4607,
+          "bottom_quintile_excess": 0.0888,
+          "spread": 0.3719
+        },
+        {
+          "date": "2021-01-29",
+          "top_quintile_excess": 0.4164,
+          "bottom_quintile_excess": -0.0338,
+          "spread": 0.4502
+        },
+        {
+          "date": "2021-02-26",
+          "top_quintile_excess": 0.1948,
+          "bottom_quintile_excess": -0.0247,
+          "spread": 0.2195
+        },
+        {
+          "date": "2021-03-31",
+          "top_quintile_excess": 0.1796,
+          "bottom_quintile_excess": 0.0094,
+          "spread": 0.1702
+        },
+        {
+          "date": "2021-04-30",
+          "top_quintile_excess": 0.0327,
+          "bottom_quintile_excess": 0.0491,
+          "spread": -0.0165
+        },
+        {
+          "date": "2021-05-31",
+          "top_quintile_excess": 0.0906,
+          "bottom_quintile_excess": -0.0709,
+          "spread": 0.1615
+        },
+        {
+          "date": "2021-06-30",
+          "top_quintile_excess": 0.1028,
+          "bottom_quintile_excess": 0.0363,
+          "spread": 0.0665
+        },
+        {
+          "date": "2021-07-30",
+          "top_quintile_excess": 0.1296,
+          "bottom_quintile_excess": 0.0033,
+          "spread": 0.1263
+        },
+        {
+          "date": "2021-08-31",
+          "top_quintile_excess": 0.133,
+          "bottom_quintile_excess": -0.0365,
+          "spread": 0.1695
+        },
+        {
+          "date": "2021-09-30",
+          "top_quintile_excess": 0.1792,
+          "bottom_quintile_excess": 0.0013,
+          "spread": 0.1778
+        },
+        {
+          "date": "2021-10-29",
+          "top_quintile_excess": 0.1644,
+          "bottom_quintile_excess": -0.0166,
+          "spread": 0.181
+        },
+        {
+          "date": "2021-11-30",
+          "top_quintile_excess": 0.0004,
+          "bottom_quintile_excess": 0.0447,
+          "spread": -0.0443
+        },
+        {
+          "date": "2021-12-31",
+          "top_quintile_excess": -0.0168,
+          "bottom_quintile_excess": 0.0854,
+          "spread": -0.1022
+        },
+        {
+          "date": "2022-01-31",
+          "top_quintile_excess": 0.0029,
+          "bottom_quintile_excess": 0.0264,
+          "spread": -0.0236
+        },
+        {
+          "date": "2022-02-28",
+          "top_quintile_excess": 0.1398,
+          "bottom_quintile_excess": 0.019,
+          "spread": 0.1208
+        },
+        {
+          "date": "2022-03-31",
+          "top_quintile_excess": 0.0135,
+          "bottom_quintile_excess": 0.048,
+          "spread": -0.0345
+        },
+        {
+          "date": "2022-04-29",
+          "top_quintile_excess": -0.0085,
+          "bottom_quintile_excess": 0.0836,
+          "spread": -0.0921
+        },
+        {
+          "date": "2022-05-31",
+          "top_quintile_excess": 0.1097,
+          "bottom_quintile_excess": -0.0259,
+          "spread": 0.1356
+        },
+        {
+          "date": "2022-06-30",
+          "top_quintile_excess": 0.1229,
+          "bottom_quintile_excess": -0.0059,
+          "spread": 0.1288
+        },
+        {
+          "date": "2022-07-29",
+          "top_quintile_excess": -0.0038,
+          "bottom_quintile_excess": 0.0159,
+          "spread": -0.0197
+        },
+        {
+          "date": "2022-08-30",
+          "top_quintile_excess": -0.0842,
+          "bottom_quintile_excess": 0.0625,
+          "spread": -0.1467
+        },
+        {
+          "date": "2022-09-30",
+          "top_quintile_excess": -0.0344,
+          "bottom_quintile_excess": -0.0115,
+          "spread": -0.023
+        },
+        {
+          "date": "2022-10-31",
+          "top_quintile_excess": -0.0689,
+          "bottom_quintile_excess": 0.04,
+          "spread": -0.1089
+        },
+        {
+          "date": "2022-11-30",
+          "top_quintile_excess": 0.0348,
+          "bottom_quintile_excess": 0.0949,
+          "spread": -0.0601
+        },
+        {
+          "date": "2022-12-30",
+          "top_quintile_excess": -0.0324,
+          "bottom_quintile_excess": 0.1269,
+          "spread": -0.1593
+        },
+        {
+          "date": "2023-01-31",
+          "top_quintile_excess": 0.0839,
+          "bottom_quintile_excess": 0.1074,
+          "spread": -0.0235
+        },
+        {
+          "date": "2023-02-28",
+          "top_quintile_excess": 0.1041,
+          "bottom_quintile_excess": 0.3056,
+          "spread": -0.2015
+        },
+        {
+          "date": "2023-03-31",
+          "top_quintile_excess": 0.0836,
+          "bottom_quintile_excess": 0.3255,
+          "spread": -0.242
+        },
+        {
+          "date": "2023-04-28",
+          "top_quintile_excess": 0.0852,
+          "bottom_quintile_excess": 0.3912,
+          "spread": -0.306
+        },
+        {
+          "date": "2023-05-31",
+          "top_quintile_excess": 0.153,
+          "bottom_quintile_excess": 0.0319,
+          "spread": 0.121
+        },
+        {
+          "date": "2023-06-30",
+          "top_quintile_excess": 0.2033,
+          "bottom_quintile_excess": 0.045,
+          "spread": 0.1583
+        },
+        {
+          "date": "2023-07-31",
+          "top_quintile_excess": 0.1838,
+          "bottom_quintile_excess": 0.0741,
+          "spread": 0.1097
+        },
+        {
+          "date": "2023-08-31",
+          "top_quintile_excess": 0.2909,
+          "bottom_quintile_excess": 0.1413,
+          "spread": 0.1496
+        },
+        {
+          "date": "2023-09-29",
+          "top_quintile_excess": 0.4342,
+          "bottom_quintile_excess": 0.1392,
+          "spread": 0.295
+        },
+        {
+          "date": "2023-10-31",
+          "top_quintile_excess": 0.4124,
+          "bottom_quintile_excess": -0.0732,
+          "spread": 0.4856
+        },
+        {
+          "date": "2023-11-30",
+          "top_quintile_excess": 0.1263,
+          "bottom_quintile_excess": 0.1763,
+          "spread": -0.0501
+        },
+        {
+          "date": "2023-12-29",
+          "top_quintile_excess": 0.161,
+          "bottom_quintile_excess": 0.0536,
+          "spread": 0.1074
+        },
+        {
+          "date": "2024-01-31",
+          "top_quintile_excess": 0.2205,
+          "bottom_quintile_excess": 0.0559,
+          "spread": 0.1646
+        },
+        {
+          "date": "2024-02-29",
+          "top_quintile_excess": 0.079,
+          "bottom_quintile_excess": 0.0005,
+          "spread": 0.0785
+        },
+        {
+          "date": "2024-03-28",
+          "top_quintile_excess": 0.1706,
+          "bottom_quintile_excess": -0.0034,
+          "spread": 0.174
+        },
+        {
+          "date": "2024-04-30",
+          "top_quintile_excess": 0.1271,
+          "bottom_quintile_excess": 0.028,
+          "spread": 0.0991
+        },
+        {
+          "date": "2024-05-31",
+          "top_quintile_excess": 0.1216,
+          "bottom_quintile_excess": 0.0428,
+          "spread": 0.0788
+        },
+        {
+          "date": "2024-06-28",
+          "top_quintile_excess": 0.1192,
+          "bottom_quintile_excess": 0.0483,
+          "spread": 0.0709
+        },
+        {
+          "date": "2024-07-31",
+          "top_quintile_excess": 0.094,
+          "bottom_quintile_excess": -0.0182,
+          "spread": 0.1122
+        },
+        {
+          "date": "2024-08-30",
+          "top_quintile_excess": -0.0128,
+          "bottom_quintile_excess": 0.0204,
+          "spread": -0.0332
+        },
+        {
+          "date": "2024-09-30",
+          "top_quintile_excess": 0.0357,
+          "bottom_quintile_excess": 0.0058,
+          "spread": 0.03
+        },
+        {
+          "date": "2024-10-31",
+          "top_quintile_excess": 0.0205,
+          "bottom_quintile_excess": -0.0175,
+          "spread": 0.038
+        },
+        {
+          "date": "2024-11-29",
+          "top_quintile_excess": 0.088,
+          "bottom_quintile_excess": 0.0058,
+          "spread": 0.0823
+        },
+        {
+          "date": "2024-12-31",
+          "top_quintile_excess": 0.0618,
+          "bottom_quintile_excess": 0.0384,
+          "spread": 0.0234
+        },
+        {
+          "date": "2025-01-31",
+          "top_quintile_excess": 0.1521,
+          "bottom_quintile_excess": -0.0332,
+          "spread": 0.1853
+        },
+        {
+          "date": "2025-02-28",
+          "top_quintile_excess": 0.1667,
+          "bottom_quintile_excess": 0.0269,
+          "spread": 0.1398
+        },
+        {
+          "date": "2025-03-28",
+          "top_quintile_excess": 0.0692,
+          "bottom_quintile_excess": 0.0099,
+          "spread": 0.0594
+        },
+        {
+          "date": "2025-04-30",
+          "top_quintile_excess": 0.0896,
+          "bottom_quintile_excess": -0.0016,
+          "spread": 0.0912
+        },
+        {
+          "date": "2025-05-30",
+          "top_quintile_excess": 0.0396,
+          "bottom_quintile_excess": -0.062,
+          "spread": 0.1016
+        },
+        {
+          "date": "2025-06-30",
+          "top_quintile_excess": 0.0384,
+          "bottom_quintile_excess": -0.0363,
+          "spread": 0.0746
+        },
+        {
+          "date": "2025-07-31",
+          "top_quintile_excess": -0.0285,
+          "bottom_quintile_excess": 0.0004,
+          "spread": -0.0288
+        },
+        {
+          "date": "2025-08-29",
+          "top_quintile_excess": 0.0338,
+          "bottom_quintile_excess": -0.0433,
+          "spread": 0.0771
+        },
+        {
+          "date": "2025-09-30",
+          "top_quintile_excess": -0.0962,
+          "bottom_quintile_excess": 0.0869,
+          "spread": -0.1832
+        },
+        {
+          "date": "2025-10-31",
+          "top_quintile_excess": 0.1386,
+          "bottom_quintile_excess": 0.0486,
+          "spread": 0.09
+        },
+        {
+          "date": "2025-11-28",
+          "top_quintile_excess": 0.163,
+          "bottom_quintile_excess": 0.003,
+          "spread": 0.1599
+        },
+        {
+          "date": "2025-12-31",
+          "top_quintile_excess": 0.115,
+          "bottom_quintile_excess": 0.0178,
+          "spread": 0.0972
+        },
+        {
+          "date": "2026-01-30",
+          "top_quintile_excess": 0.1098,
+          "bottom_quintile_excess": 0.018,
+          "spread": 0.0918
+        },
+        {
+          "date": "2026-02-27",
+          "top_quintile_excess": 0.048,
+          "bottom_quintile_excess": 0.0235,
+          "spread": 0.0245
+        },
+        {
+          "date": "2026-03-30",
+          "top_quintile_excess": 0.0475,
+          "bottom_quintile_excess": -0.0121,
+          "spread": 0.0596
+        },
+        {
+          "date": "2026-04-30",
+          "top_quintile_excess": -0.0613,
+          "bottom_quintile_excess": 0.0142,
+          "spread": -0.0755
+        }
+      ],
+      "mean_spread": 0.0441,
+      "std_spread": 0.1644,
+      "se_naive": 0.0155,
+      "t_stat": 1.7905,
+      "p_value": 0.0761,
+      "t_stat_naive": 2.8391,
+      "p_value_naive": 0.0054,
+      "se_hac": 0.0246,
+      "t_stat_hac": 1.7905,
+      "p_value_hac": 0.0761,
+      "n_months": 112,
+      "hac_lags": 5
+    }
+  },
+  "base_rate_baseline": {
+    "n_samples": 5332,
+    "brier_score": 0.2479,
+    "baseline_brier": 0.2479,
+    "brier_skill_score": 0.0,
+    "log_loss": 0.6891,
+    "roc_auc": "N/A",
+    "calibration_table": [
+      {
+        "bin_center": 0.05,
+        "predicted_avg": 0.05,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.15,
+        "predicted_avg": 0.15,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.25,
+        "predicted_avg": 0.25,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.35,
+        "predicted_avg": 0.35,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.45,
+        "predicted_avg": 0.45,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.55,
+        "predicted_avg": 0.5628,
+        "observed_rate": 0.5561,
+        "count": 5024
+      },
+      {
+        "bin_center": 0.65,
+        "predicted_avg": 0.6049,
+        "observed_rate": 0.5617,
+        "count": 308
+      },
+      {
+        "bin_center": 0.75,
+        "predicted_avg": 0.75,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.85,
+        "predicted_avg": 0.85,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.95,
+        "predicted_avg": 0.95,
+        "observed_rate": 0.0,
+        "count": 0
+      }
+    ],
+    "economic": {
+      "monthly_spreads": [
+        {
+          "date": "2017-01-31",
+          "top_quintile_excess": 0.0208,
+          "bottom_quintile_excess": 0.0208,
+          "spread": 0.0
+        },
+        {
+          "date": "2017-02-28",
+          "top_quintile_excess": 0.0411,
+          "bottom_quintile_excess": 0.0411,
+          "spread": 0.0
+        },
+        {
+          "date": "2017-03-31",
+          "top_quintile_excess": 0.0319,
+          "bottom_quintile_excess": 0.0319,
+          "spread": 0.0
+        },
+        {
+          "date": "2017-04-28",
+          "top_quintile_excess": 0.0521,
+          "bottom_quintile_excess": 0.0521,
+          "spread": 0.0
+        },
+        {
+          "date": "2017-05-31",
+          "top_quintile_excess": 0.102,
+          "bottom_quintile_excess": 0.102,
+          "spread": 0.0
+        },
+        {
+          "date": "2017-06-30",
+          "top_quintile_excess": 0.0991,
+          "bottom_quintile_excess": 0.0991,
+          "spread": 0.0
+        },
+        {
+          "date": "2017-07-31",
+          "top_quintile_excess": 0.0528,
+          "bottom_quintile_excess": 0.0528,
+          "spread": 0.0
+        },
+        {
+          "date": "2017-08-31",
+          "top_quintile_excess": 0.0607,
+          "bottom_quintile_excess": 0.0607,
+          "spread": 0.0
+        },
+        {
+          "date": "2017-09-29",
+          "top_quintile_excess": 0.0465,
+          "bottom_quintile_excess": 0.0465,
+          "spread": 0.0
+        },
+        {
+          "date": "2017-10-31",
+          "top_quintile_excess": 0.0098,
+          "bottom_quintile_excess": 0.0098,
+          "spread": 0.0
+        },
+        {
+          "date": "2017-11-30",
+          "top_quintile_excess": -0.0276,
+          "bottom_quintile_excess": -0.0276,
+          "spread": 0.0
+        },
+        {
+          "date": "2017-12-29",
+          "top_quintile_excess": -0.0356,
+          "bottom_quintile_excess": -0.0356,
+          "spread": 0.0
+        },
+        {
+          "date": "2018-01-31",
+          "top_quintile_excess": 0.004,
+          "bottom_quintile_excess": 0.004,
+          "spread": 0.0
+        },
+        {
+          "date": "2018-02-28",
+          "top_quintile_excess": -0.0031,
+          "bottom_quintile_excess": -0.0031,
+          "spread": 0.0
+        },
+        {
+          "date": "2018-03-28",
+          "top_quintile_excess": -0.0172,
+          "bottom_quintile_excess": -0.0172,
+          "spread": 0.0
+        },
+        {
+          "date": "2018-04-30",
+          "top_quintile_excess": 0.0034,
+          "bottom_quintile_excess": 0.0034,
+          "spread": 0.0
+        },
+        {
+          "date": "2018-05-31",
+          "top_quintile_excess": -0.0056,
+          "bottom_quintile_excess": -0.0056,
+          "spread": 0.0
+        },
+        {
+          "date": "2018-06-29",
+          "top_quintile_excess": 0.0051,
+          "bottom_quintile_excess": 0.0051,
+          "spread": 0.0
+        },
+        {
+          "date": "2018-07-31",
+          "top_quintile_excess": -0.0238,
+          "bottom_quintile_excess": -0.0238,
+          "spread": 0.0
+        },
+        {
+          "date": "2018-08-31",
+          "top_quintile_excess": -0.0351,
+          "bottom_quintile_excess": -0.0351,
+          "spread": 0.0
+        },
+        {
+          "date": "2018-09-28",
+          "top_quintile_excess": -0.0014,
+          "bottom_quintile_excess": -0.0014,
+          "spread": 0.0
+        },
+        {
+          "date": "2018-10-31",
+          "top_quintile_excess": -0.0039,
+          "bottom_quintile_excess": -0.0039,
+          "spread": 0.0
+        },
+        {
+          "date": "2018-11-30",
+          "top_quintile_excess": 0.0056,
+          "bottom_quintile_excess": 0.0056,
+          "spread": 0.0
+        },
+        {
+          "date": "2018-12-31",
+          "top_quintile_excess": -0.0022,
+          "bottom_quintile_excess": -0.0022,
+          "spread": 0.0
+        },
+        {
+          "date": "2019-01-31",
+          "top_quintile_excess": 0.0325,
+          "bottom_quintile_excess": 0.0325,
+          "spread": 0.0
+        },
+        {
+          "date": "2019-02-28",
+          "top_quintile_excess": 0.0504,
+          "bottom_quintile_excess": 0.0504,
+          "spread": 0.0
+        },
+        {
+          "date": "2019-03-28",
+          "top_quintile_excess": 0.0513,
+          "bottom_quintile_excess": 0.0513,
+          "spread": 0.0
+        },
+        {
+          "date": "2019-04-30",
+          "top_quintile_excess": 0.058,
+          "bottom_quintile_excess": 0.058,
+          "spread": 0.0
+        },
+        {
+          "date": "2019-05-31",
+          "top_quintile_excess": 0.0234,
+          "bottom_quintile_excess": 0.0234,
+          "spread": 0.0
+        },
+        {
+          "date": "2019-06-28",
+          "top_quintile_excess": 0.0343,
+          "bottom_quintile_excess": 0.0343,
+          "spread": 0.0
+        },
+        {
+          "date": "2019-07-31",
+          "top_quintile_excess": 0.0541,
+          "bottom_quintile_excess": 0.0541,
+          "spread": 0.0
+        },
+        {
+          "date": "2019-08-30",
+          "top_quintile_excess": 0.0658,
+          "bottom_quintile_excess": 0.0658,
+          "spread": 0.0
+        },
+        {
+          "date": "2019-09-30",
+          "top_quintile_excess": -0.0366,
+          "bottom_quintile_excess": -0.0366,
+          "spread": 0.0
+        },
+        {
+          "date": "2019-10-31",
+          "top_quintile_excess": 0.0027,
+          "bottom_quintile_excess": 0.0027,
+          "spread": 0.0
+        },
+        {
+          "date": "2019-11-29",
+          "top_quintile_excess": 0.0323,
+          "bottom_quintile_excess": 0.0323,
+          "spread": 0.0
+        },
+        {
+          "date": "2019-12-31",
+          "top_quintile_excess": 0.0249,
+          "bottom_quintile_excess": 0.0249,
+          "spread": 0.0
+        },
+        {
+          "date": "2020-01-31",
+          "top_quintile_excess": 0.0201,
+          "bottom_quintile_excess": 0.0201,
+          "spread": 0.0
+        },
+        {
+          "date": "2020-02-28",
+          "top_quintile_excess": 0.0607,
+          "bottom_quintile_excess": 0.0607,
+          "spread": 0.0
+        },
+        {
+          "date": "2020-03-31",
+          "top_quintile_excess": 0.0902,
+          "bottom_quintile_excess": 0.0902,
+          "spread": 0.0
+        },
+        {
+          "date": "2020-04-30",
+          "top_quintile_excess": 0.0655,
+          "bottom_quintile_excess": 0.0655,
+          "spread": 0.0
+        },
+        {
+          "date": "2020-05-29",
+          "top_quintile_excess": 0.1273,
+          "bottom_quintile_excess": 0.1273,
+          "spread": 0.0
+        },
+        {
+          "date": "2020-06-30",
+          "top_quintile_excess": 0.1094,
+          "bottom_quintile_excess": 0.1094,
+          "spread": 0.0
+        },
+        {
+          "date": "2020-07-31",
+          "top_quintile_excess": 0.0736,
+          "bottom_quintile_excess": 0.0736,
+          "spread": 0.0
+        },
+        {
+          "date": "2020-08-31",
+          "top_quintile_excess": 0.1198,
+          "bottom_quintile_excess": 0.1198,
+          "spread": 0.0
+        },
+        {
+          "date": "2020-09-30",
+          "top_quintile_excess": 0.1742,
+          "bottom_quintile_excess": 0.1742,
+          "spread": 0.0
+        },
+        {
+          "date": "2020-10-30",
+          "top_quintile_excess": 0.2275,
+          "bottom_quintile_excess": 0.2275,
+          "spread": 0.0
+        },
+        {
+          "date": "2020-11-27",
+          "top_quintile_excess": 0.184,
+          "bottom_quintile_excess": 0.184,
+          "spread": 0.0
+        },
+        {
+          "date": "2020-12-31",
+          "top_quintile_excess": 0.1507,
+          "bottom_quintile_excess": 0.1507,
+          "spread": 0.0
+        },
+        {
+          "date": "2021-01-29",
+          "top_quintile_excess": 0.1464,
+          "bottom_quintile_excess": 0.1464,
+          "spread": 0.0
+        },
+        {
+          "date": "2021-02-26",
+          "top_quintile_excess": 0.099,
+          "bottom_quintile_excess": 0.099,
+          "spread": 0.0
+        },
+        {
+          "date": "2021-03-31",
+          "top_quintile_excess": 0.0963,
+          "bottom_quintile_excess": 0.0963,
+          "spread": 0.0
+        },
+        {
+          "date": "2021-04-30",
+          "top_quintile_excess": 0.0529,
+          "bottom_quintile_excess": 0.0529,
+          "spread": 0.0
+        },
+        {
+          "date": "2021-05-31",
+          "top_quintile_excess": 0.0644,
+          "bottom_quintile_excess": 0.0644,
+          "spread": 0.0
+        },
+        {
+          "date": "2021-06-30",
+          "top_quintile_excess": 0.0561,
+          "bottom_quintile_excess": 0.0561,
+          "spread": 0.0
+        },
+        {
+          "date": "2021-07-30",
+          "top_quintile_excess": 0.0347,
+          "bottom_quintile_excess": 0.0347,
+          "spread": 0.0
+        },
+        {
+          "date": "2021-08-31",
+          "top_quintile_excess": 0.0681,
+          "bottom_quintile_excess": 0.0681,
+          "spread": 0.0
+        },
+        {
+          "date": "2021-09-30",
+          "top_quintile_excess": 0.0485,
+          "bottom_quintile_excess": 0.0485,
+          "spread": 0.0
+        },
+        {
+          "date": "2021-10-29",
+          "top_quintile_excess": 0.078,
+          "bottom_quintile_excess": 0.078,
+          "spread": 0.0
+        },
+        {
+          "date": "2021-11-30",
+          "top_quintile_excess": 0.0428,
+          "bottom_quintile_excess": 0.0428,
+          "spread": 0.0
+        },
+        {
+          "date": "2021-12-31",
+          "top_quintile_excess": 0.0378,
+          "bottom_quintile_excess": 0.0378,
+          "spread": 0.0
+        },
+        {
+          "date": "2022-01-31",
+          "top_quintile_excess": 0.0604,
+          "bottom_quintile_excess": 0.0604,
+          "spread": 0.0
+        },
+        {
+          "date": "2022-02-28",
+          "top_quintile_excess": 0.0732,
+          "bottom_quintile_excess": 0.0732,
+          "spread": 0.0
+        },
+        {
+          "date": "2022-03-31",
+          "top_quintile_excess": 0.0674,
+          "bottom_quintile_excess": 0.0674,
+          "spread": 0.0
+        },
+        {
+          "date": "2022-04-29",
+          "top_quintile_excess": 0.0364,
+          "bottom_quintile_excess": 0.0364,
+          "spread": 0.0
+        },
+        {
+          "date": "2022-05-31",
+          "top_quintile_excess": 0.0269,
+          "bottom_quintile_excess": 0.0269,
+          "spread": 0.0
+        },
+        {
+          "date": "2022-06-30",
+          "top_quintile_excess": 0.0401,
+          "bottom_quintile_excess": 0.0401,
+          "spread": 0.0
+        },
+        {
+          "date": "2022-07-29",
+          "top_quintile_excess": -0.0042,
+          "bottom_quintile_excess": -0.0042,
+          "spread": 0.0
+        },
+        {
+          "date": "2022-08-30",
+          "top_quintile_excess": -0.0207,
+          "bottom_quintile_excess": -0.0207,
+          "spread": 0.0
+        },
+        {
+          "date": "2022-09-30",
+          "top_quintile_excess": -0.0266,
+          "bottom_quintile_excess": -0.0266,
+          "spread": 0.0
+        },
+        {
+          "date": "2022-10-31",
+          "top_quintile_excess": 0.0049,
+          "bottom_quintile_excess": 0.0049,
+          "spread": 0.0
+        },
+        {
+          "date": "2022-11-30",
+          "top_quintile_excess": 0.036,
+          "bottom_quintile_excess": 0.036,
+          "spread": 0.0
+        },
+        {
+          "date": "2022-12-30",
+          "top_quintile_excess": 0.0615,
+          "bottom_quintile_excess": 0.0615,
+          "spread": 0.0
+        },
+        {
+          "date": "2023-01-31",
+          "top_quintile_excess": 0.0784,
+          "bottom_quintile_excess": 0.0784,
+          "spread": 0.0
+        },
+        {
+          "date": "2023-02-28",
+          "top_quintile_excess": 0.1526,
+          "bottom_quintile_excess": 0.1526,
+          "spread": 0.0
+        },
+        {
+          "date": "2023-03-31",
+          "top_quintile_excess": 0.155,
+          "bottom_quintile_excess": 0.155,
+          "spread": 0.0
+        },
+        {
+          "date": "2023-04-28",
+          "top_quintile_excess": 0.162,
+          "bottom_quintile_excess": 0.162,
+          "spread": 0.0
+        },
+        {
+          "date": "2023-05-31",
+          "top_quintile_excess": 0.1827,
+          "bottom_quintile_excess": 0.1827,
+          "spread": 0.0
+        },
+        {
+          "date": "2023-06-30",
+          "top_quintile_excess": 0.1541,
+          "bottom_quintile_excess": 0.1541,
+          "spread": 0.0
+        },
+        {
+          "date": "2023-07-31",
+          "top_quintile_excess": 0.1683,
+          "bottom_quintile_excess": 0.1683,
+          "spread": 0.0
+        },
+        {
+          "date": "2023-08-31",
+          "top_quintile_excess": 0.145,
+          "bottom_quintile_excess": 0.145,
+          "spread": 0.0
+        },
+        {
+          "date": "2023-09-29",
+          "top_quintile_excess": 0.1397,
+          "bottom_quintile_excess": 0.1397,
+          "spread": 0.0
+        },
+        {
+          "date": "2023-10-31",
+          "top_quintile_excess": 0.1229,
+          "bottom_quintile_excess": 0.1229,
+          "spread": 0.0
+        },
+        {
+          "date": "2023-11-30",
+          "top_quintile_excess": 0.0924,
+          "bottom_quintile_excess": 0.0924,
+          "spread": 0.0
+        },
+        {
+          "date": "2023-12-29",
+          "top_quintile_excess": 0.0897,
+          "bottom_quintile_excess": 0.0897,
+          "spread": 0.0
+        },
+        {
+          "date": "2024-01-31",
+          "top_quintile_excess": 0.076,
+          "bottom_quintile_excess": 0.076,
+          "spread": 0.0
+        },
+        {
+          "date": "2024-02-29",
+          "top_quintile_excess": 0.0596,
+          "bottom_quintile_excess": 0.0596,
+          "spread": 0.0
+        },
+        {
+          "date": "2024-03-28",
+          "top_quintile_excess": 0.0676,
+          "bottom_quintile_excess": 0.0676,
+          "spread": 0.0
+        },
+        {
+          "date": "2024-04-30",
+          "top_quintile_excess": 0.0391,
+          "bottom_quintile_excess": 0.0391,
+          "spread": 0.0
+        },
+        {
+          "date": "2024-05-31",
+          "top_quintile_excess": 0.0287,
+          "bottom_quintile_excess": 0.0287,
+          "spread": 0.0
+        },
+        {
+          "date": "2024-06-28",
+          "top_quintile_excess": 0.037,
+          "bottom_quintile_excess": 0.037,
+          "spread": 0.0
+        },
+        {
+          "date": "2024-07-31",
+          "top_quintile_excess": 0.0149,
+          "bottom_quintile_excess": 0.0149,
+          "spread": 0.0
+        },
+        {
+          "date": "2024-08-30",
+          "top_quintile_excess": -0.0,
+          "bottom_quintile_excess": -0.0,
+          "spread": 0.0
+        },
+        {
+          "date": "2024-09-30",
+          "top_quintile_excess": 0.0006,
+          "bottom_quintile_excess": 0.0006,
+          "spread": 0.0
+        },
+        {
+          "date": "2024-10-31",
+          "top_quintile_excess": -0.005,
+          "bottom_quintile_excess": -0.005,
+          "spread": 0.0
+        },
+        {
+          "date": "2024-11-29",
+          "top_quintile_excess": 0.0258,
+          "bottom_quintile_excess": 0.0258,
+          "spread": 0.0
+        },
+        {
+          "date": "2024-12-31",
+          "top_quintile_excess": 0.0274,
+          "bottom_quintile_excess": 0.0274,
+          "spread": 0.0
+        },
+        {
+          "date": "2025-01-31",
+          "top_quintile_excess": 0.0299,
+          "bottom_quintile_excess": 0.0299,
+          "spread": 0.0
+        },
+        {
+          "date": "2025-02-28",
+          "top_quintile_excess": 0.05,
+          "bottom_quintile_excess": 0.05,
+          "spread": 0.0
+        },
+        {
+          "date": "2025-03-28",
+          "top_quintile_excess": 0.0362,
+          "bottom_quintile_excess": 0.0362,
+          "spread": 0.0
+        },
+        {
+          "date": "2025-04-30",
+          "top_quintile_excess": 0.0299,
+          "bottom_quintile_excess": 0.0299,
+          "spread": 0.0
+        },
+        {
+          "date": "2025-05-30",
+          "top_quintile_excess": 0.0114,
+          "bottom_quintile_excess": 0.0114,
+          "spread": 0.0
+        },
+        {
+          "date": "2025-06-30",
+          "top_quintile_excess": 0.0024,
+          "bottom_quintile_excess": 0.0024,
+          "spread": 0.0
+        },
+        {
+          "date": "2025-07-31",
+          "top_quintile_excess": 0.0162,
+          "bottom_quintile_excess": 0.0162,
+          "spread": 0.0
+        },
+        {
+          "date": "2025-08-29",
+          "top_quintile_excess": 0.0469,
+          "bottom_quintile_excess": 0.0469,
+          "spread": 0.0
+        },
+        {
+          "date": "2025-09-30",
+          "top_quintile_excess": -0.0054,
+          "bottom_quintile_excess": -0.0054,
+          "spread": 0.0
+        },
+        {
+          "date": "2025-10-31",
+          "top_quintile_excess": 0.0752,
+          "bottom_quintile_excess": 0.0752,
+          "spread": 0.0
+        },
+        {
+          "date": "2025-11-28",
+          "top_quintile_excess": 0.0887,
+          "bottom_quintile_excess": 0.0887,
+          "spread": 0.0
+        },
+        {
+          "date": "2025-12-31",
+          "top_quintile_excess": 0.0644,
+          "bottom_quintile_excess": 0.0644,
+          "spread": 0.0
+        },
+        {
+          "date": "2026-01-30",
+          "top_quintile_excess": 0.0707,
+          "bottom_quintile_excess": 0.0707,
+          "spread": 0.0
+        },
+        {
+          "date": "2026-02-27",
+          "top_quintile_excess": 0.0456,
+          "bottom_quintile_excess": 0.0456,
+          "spread": 0.0
+        },
+        {
+          "date": "2026-03-30",
+          "top_quintile_excess": 0.0412,
+          "bottom_quintile_excess": 0.0412,
+          "spread": 0.0
+        },
+        {
+          "date": "2026-04-30",
+          "top_quintile_excess": 0.0095,
+          "bottom_quintile_excess": 0.0095,
+          "spread": 0.0
+        }
+      ],
+      "mean_spread": 0.0,
+      "std_spread": 0.0,
+      "se_naive": 0.0,
+      "t_stat": 0.0,
+      "p_value": 1.0,
+      "t_stat_naive": 0.0,
+      "p_value_naive": 1.0,
+      "se_hac": 0.0,
+      "t_stat_hac": 0.0,
+      "p_value_hac": 1.0,
+      "n_months": 112,
+      "hac_lags": 5
+    }
+  },
+  "momentum_baseline": {
+    "n_samples": 5332,
+    "brier_score": 0.2482,
+    "baseline_brier": 0.2479,
+    "brier_skill_score": -0.0009,
+    "log_loss": 0.6896,
+    "roc_auc": 0.5055,
+    "calibration_table": [
+      {
+        "bin_center": 0.05,
+        "predicted_avg": 0.05,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.15,
+        "predicted_avg": 0.15,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.25,
+        "predicted_avg": 0.25,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.35,
+        "predicted_avg": 0.35,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.45,
+        "predicted_avg": 0.4781,
+        "observed_rate": 0.5306,
+        "count": 392
+      },
+      {
+        "bin_center": 0.55,
+        "predicted_avg": 0.5505,
+        "observed_rate": 0.5568,
+        "count": 4264
+      },
+      {
+        "bin_center": 0.65,
+        "predicted_avg": 0.6295,
+        "observed_rate": 0.5721,
+        "count": 652
+      },
+      {
+        "bin_center": 0.75,
+        "predicted_avg": 0.7248,
+        "observed_rate": 0.5,
+        "count": 24
+      },
+      {
+        "bin_center": 0.85,
+        "predicted_avg": 0.85,
+        "observed_rate": 0.0,
+        "count": 0
+      },
+      {
+        "bin_center": 0.95,
+        "predicted_avg": 0.95,
+        "observed_rate": 0.0,
+        "count": 0
+      }
+    ],
+    "economic": {
+      "monthly_spreads": [
+        {
+          "date": "2017-01-31",
+          "top_quintile_excess": 0.0333,
+          "bottom_quintile_excess": -0.0379,
+          "spread": 0.0712
+        },
+        {
+          "date": "2017-02-28",
+          "top_quintile_excess": 0.1605,
+          "bottom_quintile_excess": -0.1317,
+          "spread": 0.2922
+        },
+        {
+          "date": "2017-03-31",
+          "top_quintile_excess": 0.1737,
+          "bottom_quintile_excess": -0.0872,
+          "spread": 0.2609
+        },
+        {
+          "date": "2017-04-28",
+          "top_quintile_excess": 0.1469,
+          "bottom_quintile_excess": -0.0417,
+          "spread": 0.1886
+        },
+        {
+          "date": "2017-05-31",
+          "top_quintile_excess": 0.1625,
+          "bottom_quintile_excess": 0.0466,
+          "spread": 0.1159
+        },
+        {
+          "date": "2017-06-30",
+          "top_quintile_excess": 0.1827,
+          "bottom_quintile_excess": 0.032,
+          "spread": 0.1507
+        },
+        {
+          "date": "2017-07-31",
+          "top_quintile_excess": 0.0335,
+          "bottom_quintile_excess": 0.0822,
+          "spread": -0.0487
+        },
+        {
+          "date": "2017-08-31",
+          "top_quintile_excess": 0.0536,
+          "bottom_quintile_excess": 0.1592,
+          "spread": -0.1055
+        },
+        {
+          "date": "2017-09-29",
+          "top_quintile_excess": 0.0667,
+          "bottom_quintile_excess": 0.0205,
+          "spread": 0.0462
+        },
+        {
+          "date": "2017-10-31",
+          "top_quintile_excess": 0.0279,
+          "bottom_quintile_excess": 0.0229,
+          "spread": 0.005
+        },
+        {
+          "date": "2017-11-30",
+          "top_quintile_excess": -0.0747,
+          "bottom_quintile_excess": -0.0361,
+          "spread": -0.0385
+        },
+        {
+          "date": "2017-12-29",
+          "top_quintile_excess": -0.048,
+          "bottom_quintile_excess": -0.0209,
+          "spread": -0.027
+        },
+        {
+          "date": "2018-01-31",
+          "top_quintile_excess": 0.1284,
+          "bottom_quintile_excess": -0.0949,
+          "spread": 0.2233
+        },
+        {
+          "date": "2018-02-28",
+          "top_quintile_excess": 0.0988,
+          "bottom_quintile_excess": -0.0922,
+          "spread": 0.191
+        },
+        {
+          "date": "2018-03-28",
+          "top_quintile_excess": 0.0456,
+          "bottom_quintile_excess": -0.018,
+          "spread": 0.0636
+        },
+        {
+          "date": "2018-04-30",
+          "top_quintile_excess": 0.1006,
+          "bottom_quintile_excess": -0.0294,
+          "spread": 0.13
+        },
+        {
+          "date": "2018-05-31",
+          "top_quintile_excess": 0.0083,
+          "bottom_quintile_excess": 0.0084,
+          "spread": -0.0001
+        },
+        {
+          "date": "2018-06-29",
+          "top_quintile_excess": 0.0013,
+          "bottom_quintile_excess": -0.0549,
+          "spread": 0.0561
+        },
+        {
+          "date": "2018-07-31",
+          "top_quintile_excess": 0.0446,
+          "bottom_quintile_excess": -0.0282,
+          "spread": 0.0728
+        },
+        {
+          "date": "2018-08-31",
+          "top_quintile_excess": 0.0445,
+          "bottom_quintile_excess": -0.0756,
+          "spread": 0.12
+        },
+        {
+          "date": "2018-09-28",
+          "top_quintile_excess": -0.0225,
+          "bottom_quintile_excess": 0.0112,
+          "spread": -0.0338
+        },
+        {
+          "date": "2018-10-31",
+          "top_quintile_excess": -0.0331,
+          "bottom_quintile_excess": 0.0671,
+          "spread": -0.1002
+        },
+        {
+          "date": "2018-11-30",
+          "top_quintile_excess": -0.0126,
+          "bottom_quintile_excess": 0.0273,
+          "spread": -0.0399
+        },
+        {
+          "date": "2018-12-31",
+          "top_quintile_excess": -0.0074,
+          "bottom_quintile_excess": -0.0392,
+          "spread": 0.0318
+        },
+        {
+          "date": "2019-01-31",
+          "top_quintile_excess": 0.0601,
+          "bottom_quintile_excess": -0.0144,
+          "spread": 0.0744
+        },
+        {
+          "date": "2019-02-28",
+          "top_quintile_excess": 0.0891,
+          "bottom_quintile_excess": -0.0678,
+          "spread": 0.1568
+        },
+        {
+          "date": "2019-03-28",
+          "top_quintile_excess": 0.1136,
+          "bottom_quintile_excess": 0.0502,
+          "spread": 0.0634
+        },
+        {
+          "date": "2019-04-30",
+          "top_quintile_excess": 0.1287,
+          "bottom_quintile_excess": 0.0768,
+          "spread": 0.0519
+        },
+        {
+          "date": "2019-05-31",
+          "top_quintile_excess": 0.076,
+          "bottom_quintile_excess": -0.0036,
+          "spread": 0.0796
+        },
+        {
+          "date": "2019-06-28",
+          "top_quintile_excess": 0.0429,
+          "bottom_quintile_excess": 0.0333,
+          "spread": 0.0096
+        },
+        {
+          "date": "2019-07-31",
+          "top_quintile_excess": 0.1808,
+          "bottom_quintile_excess": 0.0469,
+          "spread": 0.1339
+        },
+        {
+          "date": "2019-08-30",
+          "top_quintile_excess": 0.0586,
+          "bottom_quintile_excess": 0.0271,
+          "spread": 0.0315
+        },
+        {
+          "date": "2019-09-30",
+          "top_quintile_excess": -0.0058,
+          "bottom_quintile_excess": -0.0773,
+          "spread": 0.0715
+        },
+        {
+          "date": "2019-10-31",
+          "top_quintile_excess": -0.0203,
+          "bottom_quintile_excess": -0.0242,
+          "spread": 0.0039
+        },
+        {
+          "date": "2019-11-29",
+          "top_quintile_excess": 0.0602,
+          "bottom_quintile_excess": 0.019,
+          "spread": 0.0411
+        },
+        {
+          "date": "2019-12-31",
+          "top_quintile_excess": 0.1175,
+          "bottom_quintile_excess": -0.0168,
+          "spread": 0.1343
+        },
+        {
+          "date": "2020-01-31",
+          "top_quintile_excess": -0.0104,
+          "bottom_quintile_excess": 0.0365,
+          "spread": -0.047
+        },
+        {
+          "date": "2020-02-28",
+          "top_quintile_excess": -0.0051,
+          "bottom_quintile_excess": 0.1453,
+          "spread": -0.1505
+        },
+        {
+          "date": "2020-03-31",
+          "top_quintile_excess": 0.0941,
+          "bottom_quintile_excess": 0.2024,
+          "spread": -0.1083
+        },
+        {
+          "date": "2020-04-30",
+          "top_quintile_excess": -0.0417,
+          "bottom_quintile_excess": 0.1427,
+          "spread": -0.1844
+        },
+        {
+          "date": "2020-05-29",
+          "top_quintile_excess": -0.0769,
+          "bottom_quintile_excess": 0.2183,
+          "spread": -0.2952
+        },
+        {
+          "date": "2020-06-30",
+          "top_quintile_excess": -0.1079,
+          "bottom_quintile_excess": 0.1171,
+          "spread": -0.225
+        },
+        {
+          "date": "2020-07-31",
+          "top_quintile_excess": -0.0122,
+          "bottom_quintile_excess": 0.3109,
+          "spread": -0.3231
+        },
+        {
+          "date": "2020-08-31",
+          "top_quintile_excess": 0.0302,
+          "bottom_quintile_excess": 0.161,
+          "spread": -0.1308
+        },
+        {
+          "date": "2020-09-30",
+          "top_quintile_excess": 0.161,
+          "bottom_quintile_excess": 0.3424,
+          "spread": -0.1814
+        },
+        {
+          "date": "2020-10-30",
+          "top_quintile_excess": 0.3066,
+          "bottom_quintile_excess": 0.3724,
+          "spread": -0.0658
+        },
+        {
+          "date": "2020-11-27",
+          "top_quintile_excess": 0.3334,
+          "bottom_quintile_excess": 0.1601,
+          "spread": 0.1734
+        },
+        {
+          "date": "2020-12-31",
+          "top_quintile_excess": 0.3723,
+          "bottom_quintile_excess": 0.1064,
+          "spread": 0.2658
+        },
+        {
+          "date": "2021-01-29",
+          "top_quintile_excess": 0.4264,
+          "bottom_quintile_excess": 0.1043,
+          "spread": 0.3221
+        },
+        {
+          "date": "2021-02-26",
+          "top_quintile_excess": 0.1364,
+          "bottom_quintile_excess": 0.0549,
+          "spread": 0.0815
+        },
+        {
+          "date": "2021-03-31",
+          "top_quintile_excess": 0.139,
+          "bottom_quintile_excess": 0.0577,
+          "spread": 0.0813
+        },
+        {
+          "date": "2021-04-30",
+          "top_quintile_excess": 0.0142,
+          "bottom_quintile_excess": -0.0264,
+          "spread": 0.0406
+        },
+        {
+          "date": "2021-05-31",
+          "top_quintile_excess": 0.1387,
+          "bottom_quintile_excess": -0.0058,
+          "spread": 0.1445
+        },
+        {
+          "date": "2021-06-30",
+          "top_quintile_excess": 0.0247,
+          "bottom_quintile_excess": -0.0123,
+          "spread": 0.037
+        },
+        {
+          "date": "2021-07-30",
+          "top_quintile_excess": 0.0379,
+          "bottom_quintile_excess": 0.015,
+          "spread": 0.0229
+        },
+        {
+          "date": "2021-08-31",
+          "top_quintile_excess": 0.1683,
+          "bottom_quintile_excess": 0.0182,
+          "spread": 0.1502
+        },
+        {
+          "date": "2021-09-30",
+          "top_quintile_excess": 0.0921,
+          "bottom_quintile_excess": -0.046,
+          "spread": 0.1381
+        },
+        {
+          "date": "2021-10-29",
+          "top_quintile_excess": 0.1786,
+          "bottom_quintile_excess": 0.0014,
+          "spread": 0.1771
+        },
+        {
+          "date": "2021-11-30",
+          "top_quintile_excess": 0.068,
+          "bottom_quintile_excess": 0.0399,
+          "spread": 0.0281
+        },
+        {
+          "date": "2021-12-31",
+          "top_quintile_excess": -0.0214,
+          "bottom_quintile_excess": 0.079,
+          "spread": -0.1003
+        },
+        {
+          "date": "2022-01-31",
+          "top_quintile_excess": 0.0206,
+          "bottom_quintile_excess": 0.047,
+          "spread": -0.0263
+        },
+        {
+          "date": "2022-02-28",
+          "top_quintile_excess": 0.1019,
+          "bottom_quintile_excess": 0.1386,
+          "spread": -0.0367
+        },
+        {
+          "date": "2022-03-31",
+          "top_quintile_excess": 0.0402,
+          "bottom_quintile_excess": 0.1581,
+          "spread": -0.1179
+        },
+        {
+          "date": "2022-04-29",
+          "top_quintile_excess": 0.048,
+          "bottom_quintile_excess": 0.0735,
+          "spread": -0.0255
+        },
+        {
+          "date": "2022-05-31",
+          "top_quintile_excess": 0.0641,
+          "bottom_quintile_excess": -0.0096,
+          "spread": 0.0737
+        },
+        {
+          "date": "2022-06-30",
+          "top_quintile_excess": 0.0797,
+          "bottom_quintile_excess": 0.0415,
+          "spread": 0.0382
+        },
+        {
+          "date": "2022-07-29",
+          "top_quintile_excess": 0.0151,
+          "bottom_quintile_excess": 0.0067,
+          "spread": 0.0084
+        },
+        {
+          "date": "2022-08-30",
+          "top_quintile_excess": -0.061,
+          "bottom_quintile_excess": 0.0437,
+          "spread": -0.1047
+        },
+        {
+          "date": "2022-09-30",
+          "top_quintile_excess": -0.0552,
+          "bottom_quintile_excess": 0.0366,
+          "spread": -0.0918
+        },
+        {
+          "date": "2022-10-31",
+          "top_quintile_excess": -0.0855,
+          "bottom_quintile_excess": 0.025,
+          "spread": -0.1105
+        },
+        {
+          "date": "2022-11-30",
+          "top_quintile_excess": 0.0493,
+          "bottom_quintile_excess": 0.0568,
+          "spread": -0.0075
+        },
+        {
+          "date": "2022-12-30",
+          "top_quintile_excess": 0.0458,
+          "bottom_quintile_excess": 0.113,
+          "spread": -0.0672
+        },
+        {
+          "date": "2023-01-31",
+          "top_quintile_excess": 0.0648,
+          "bottom_quintile_excess": 0.1539,
+          "spread": -0.089
+        },
+        {
+          "date": "2023-02-28",
+          "top_quintile_excess": 0.1893,
+          "bottom_quintile_excess": 0.2538,
+          "spread": -0.0645
+        },
+        {
+          "date": "2023-03-31",
+          "top_quintile_excess": 0.1386,
+          "bottom_quintile_excess": 0.374,
+          "spread": -0.2354
+        },
+        {
+          "date": "2023-04-28",
+          "top_quintile_excess": 0.1009,
+          "bottom_quintile_excess": 0.3798,
+          "spread": -0.2789
+        },
+        {
+          "date": "2023-05-31",
+          "top_quintile_excess": 0.2077,
+          "bottom_quintile_excess": 0.338,
+          "spread": -0.1303
+        },
+        {
+          "date": "2023-06-30",
+          "top_quintile_excess": 0.2058,
+          "bottom_quintile_excess": 0.3777,
+          "spread": -0.1719
+        },
+        {
+          "date": "2023-07-31",
+          "top_quintile_excess": 0.2162,
+          "bottom_quintile_excess": 0.3133,
+          "spread": -0.0971
+        },
+        {
+          "date": "2023-08-31",
+          "top_quintile_excess": 0.2392,
+          "bottom_quintile_excess": -0.0448,
+          "spread": 0.284
+        },
+        {
+          "date": "2023-09-29",
+          "top_quintile_excess": 0.403,
+          "bottom_quintile_excess": -0.0013,
+          "spread": 0.4043
+        },
+        {
+          "date": "2023-10-31",
+          "top_quintile_excess": 0.4024,
+          "bottom_quintile_excess": -0.0137,
+          "spread": 0.4161
+        },
+        {
+          "date": "2023-11-30",
+          "top_quintile_excess": 0.2371,
+          "bottom_quintile_excess": 0.0183,
+          "spread": 0.2188
+        },
+        {
+          "date": "2023-12-29",
+          "top_quintile_excess": 0.2899,
+          "bottom_quintile_excess": 0.0062,
+          "spread": 0.2837
+        },
+        {
+          "date": "2024-01-31",
+          "top_quintile_excess": 0.2511,
+          "bottom_quintile_excess": -0.0014,
+          "spread": 0.2525
+        },
+        {
+          "date": "2024-02-29",
+          "top_quintile_excess": 0.1646,
+          "bottom_quintile_excess": 0.0286,
+          "spread": 0.136
+        },
+        {
+          "date": "2024-03-28",
+          "top_quintile_excess": 0.2266,
+          "bottom_quintile_excess": 0.052,
+          "spread": 0.1746
+        },
+        {
+          "date": "2024-04-30",
+          "top_quintile_excess": 0.1339,
+          "bottom_quintile_excess": 0.0302,
+          "spread": 0.1037
+        },
+        {
+          "date": "2024-05-31",
+          "top_quintile_excess": 0.1223,
+          "bottom_quintile_excess": -0.0228,
+          "spread": 0.145
+        },
+        {
+          "date": "2024-06-28",
+          "top_quintile_excess": 0.1375,
+          "bottom_quintile_excess": -0.016,
+          "spread": 0.1535
+        },
+        {
+          "date": "2024-07-31",
+          "top_quintile_excess": 0.0553,
+          "bottom_quintile_excess": 0.0173,
+          "spread": 0.0381
+        },
+        {
+          "date": "2024-08-30",
+          "top_quintile_excess": -0.0323,
+          "bottom_quintile_excess": 0.0489,
+          "spread": -0.0812
+        },
+        {
+          "date": "2024-09-30",
+          "top_quintile_excess": 0.006,
+          "bottom_quintile_excess": 0.0064,
+          "spread": -0.0005
+        },
+        {
+          "date": "2024-10-31",
+          "top_quintile_excess": 0.0205,
+          "bottom_quintile_excess": 0.0453,
+          "spread": -0.0248
+        },
+        {
+          "date": "2024-11-29",
+          "top_quintile_excess": 0.0985,
+          "bottom_quintile_excess": 0.1014,
+          "spread": -0.003
+        },
+        {
+          "date": "2024-12-31",
+          "top_quintile_excess": 0.0936,
+          "bottom_quintile_excess": 0.0881,
+          "spread": 0.0056
+        },
+        {
+          "date": "2025-01-31",
+          "top_quintile_excess": 0.1354,
+          "bottom_quintile_excess": -0.0231,
+          "spread": 0.1585
+        },
+        {
+          "date": "2025-02-28",
+          "top_quintile_excess": 0.1813,
+          "bottom_quintile_excess": 0.0604,
+          "spread": 0.1209
+        },
+        {
+          "date": "2025-03-28",
+          "top_quintile_excess": 0.1197,
+          "bottom_quintile_excess": 0.047,
+          "spread": 0.0728
+        },
+        {
+          "date": "2025-04-30",
+          "top_quintile_excess": 0.0657,
+          "bottom_quintile_excess": -0.0128,
+          "spread": 0.0785
+        },
+        {
+          "date": "2025-05-30",
+          "top_quintile_excess": 0.0403,
+          "bottom_quintile_excess": -0.0544,
+          "spread": 0.0947
+        },
+        {
+          "date": "2025-06-30",
+          "top_quintile_excess": -0.0489,
+          "bottom_quintile_excess": -0.0551,
+          "spread": 0.0062
+        },
+        {
+          "date": "2025-07-31",
+          "top_quintile_excess": -0.0329,
+          "bottom_quintile_excess": -0.0391,
+          "spread": 0.0062
+        },
+        {
+          "date": "2025-08-29",
+          "top_quintile_excess": 0.0036,
+          "bottom_quintile_excess": -0.0591,
+          "spread": 0.0628
+        },
+        {
+          "date": "2025-09-30",
+          "top_quintile_excess": -0.0572,
+          "bottom_quintile_excess": -0.0764,
+          "spread": 0.0192
+        },
+        {
+          "date": "2025-10-31",
+          "top_quintile_excess": 0.0795,
+          "bottom_quintile_excess": 0.0183,
+          "spread": 0.0612
+        },
+        {
+          "date": "2025-11-28",
+          "top_quintile_excess": 0.0756,
+          "bottom_quintile_excess": -0.0171,
+          "spread": 0.0926
+        },
+        {
+          "date": "2025-12-31",
+          "top_quintile_excess": 0.1022,
+          "bottom_quintile_excess": -0.0369,
+          "spread": 0.1391
+        },
+        {
+          "date": "2026-01-30",
+          "top_quintile_excess": 0.0975,
+          "bottom_quintile_excess": -0.0169,
+          "spread": 0.1144
+        },
+        {
+          "date": "2026-02-27",
+          "top_quintile_excess": 0.0346,
+          "bottom_quintile_excess": 0.037,
+          "spread": -0.0024
+        },
+        {
+          "date": "2026-03-30",
+          "top_quintile_excess": 0.066,
+          "bottom_quintile_excess": 0.0523,
+          "spread": 0.0138
+        },
+        {
+          "date": "2026-04-30",
+          "top_quintile_excess": -0.0613,
+          "bottom_quintile_excess": 0.0435,
+          "spread": -0.1049
+        }
+      ],
+      "mean_spread": 0.0378,
+      "std_spread": 0.1381,
+      "se_naive": 0.013,
+      "t_stat": 1.6247,
+      "p_value": 0.1071,
+      "t_stat_naive": 2.8975,
+      "p_value_naive": 0.0045,
+      "se_hac": 0.0233,
+      "t_stat_hac": 1.6247,
+      "p_value_hac": 0.1071,
+      "n_months": 112,
+      "hac_lags": 5
+    }
+  }
+}

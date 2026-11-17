@@ -83,185 +83,194 @@ export function SettingsPage(): React.JSX.Element {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 space-y-8">
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm space-y-6">
-        <div>
-          <h2 className="text-xl font-bold text-slate-900">Research & Risk Preferences</h2>
-          <p className="text-xs text-slate-500 mt-1">
-            Personalize decision thresholds, investment horizons, and sector exclusion boundaries.
-          </p>
-        </div>
-
-        {success && (
-          <div className="rounded-md bg-emerald-50 border border-emerald-200 p-3 text-xs text-emerald-700">
-            {success}
-          </div>
-        )}
-
-        <div className="space-y-4 text-xs">
-          <div>
-            <label className="block font-semibold text-slate-700 mb-1">Risk Profile</label>
-            <select
-              value={riskLevel}
-              onChange={(e) => setRiskLevel(e.target.value)}
-              className="w-full rounded border border-slate-300 p-2 bg-white text-slate-800"
-            >
-              <option value="conservative">Conservative</option>
-              <option value="moderate">Moderate</option>
-              <option value="aggressive">Aggressive</option>
-            </select>
+    <div className="min-h-screen bg-[#070b12] text-slate-100 p-6 md:p-10">
+      <div className="max-w-4xl mx-auto space-y-8">
+        <div className="rounded-3xl border border-white/10 bg-[#0d1322]/90 backdrop-blur-xl p-8 shadow-2xl space-y-6">
+          <div className="border-b border-white/5 pb-4">
+            <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-2.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+              Research & Risk Preferences
+            </h2>
+            <p className="text-xs text-slate-400 mt-1">
+              Personalize decision thresholds, investment horizons, and sector exclusion boundaries.
+            </p>
           </div>
 
-          <div>
-            <label className="block font-semibold text-slate-700 mb-1">
-              Investment Evaluation Horizon
-            </label>
-            <div className="text-[11px] text-slate-500 mb-1">Model horizon: 6 months</div>
-            <select
-              value={horizon}
-              onChange={(e) => setHorizon(Number(e.target.value))}
-              className="w-full rounded border border-slate-300 p-2 bg-white text-slate-800"
-            >
-              <option value={6}>6 Months (Fixed Model Horizon)</option>
-            </select>
-          </div>
+          {success && (
+            <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-xs text-emerald-300">
+              {success}
+            </div>
+          )}
 
-          <div>
-            <label className="block font-semibold text-slate-700 mb-1">Sector Exclusions</label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={newExclusion}
-                onChange={(e) => setNewExclusion(e.target.value)}
-                placeholder="e.g. Tobacco, Defense, Energy"
-                className="flex-1 rounded border border-slate-300 px-3 py-1.5 text-xs"
-              />
-              <button
-                type="button"
-                onClick={addExclusion}
-                className="rounded bg-slate-200 px-3 py-1.5 font-semibold text-slate-700 hover:bg-slate-300"
+          <div className="space-y-6 text-xs">
+            <div>
+              <label className="block font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                Risk Profile
+              </label>
+              <select
+                value={riskLevel}
+                onChange={(e) => setRiskLevel(e.target.value)}
+                className="w-full rounded-2xl border border-white/10 p-3.5 bg-[#141d33] text-white focus:outline-none focus:border-cyan-500/50"
               >
-                Add
-              </button>
+                <option value="conservative">Conservative</option>
+                <option value="moderate">Moderate</option>
+                <option value="aggressive">Aggressive</option>
+              </select>
             </div>
 
-            {exclusions.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                {exclusions.map((sector) => (
-                  <span
-                    key={sector}
-                    className="inline-flex items-center gap-1 rounded bg-slate-100 px-2 py-0.5 text-slate-700 text-[11px]"
-                  >
-                    {sector}
-                    <button
-                      type="button"
-                      onClick={() => removeExclusion(sector)}
-                      className="text-slate-400 hover:text-slate-600"
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
+            <div>
+              <label className="block font-semibold uppercase tracking-wider text-slate-300 mb-1">
+                Investment Evaluation Horizon
+              </label>
+              <div className="text-[11px] text-slate-400 mb-2">Model horizon: 6 months</div>
+              <select
+                value={horizon}
+                onChange={(e) => setHorizon(Number(e.target.value))}
+                className="w-full rounded-2xl border border-white/10 p-3.5 bg-[#141d33] text-white focus:outline-none focus:border-cyan-500/50"
+              >
+                <option value={6}>6 Months (Fixed Model Horizon - 126d)</option>
+              </select>
+            </div>
 
+            <div>
+              <label className="block font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                Sector Exclusions
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newExclusion}
+                  onChange={(e) => setNewExclusion(e.target.value)}
+                  placeholder="e.g. Tobacco, Defense, Energy..."
+                  className="flex-1 rounded-2xl border border-white/10 bg-[#141d33] px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50"
+                />
+                <button
+                  type="button"
+                  onClick={addExclusion}
+                  className="rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 px-5 py-3 font-bold text-white transition-all"
+                >
+                  Add
+                </button>
+              </div>
+
+              {exclusions.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {exclusions.map((sector) => (
+                    <span
+                      key={sector}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 px-3 py-1 text-cyan-300 text-xs font-medium"
+                    >
+                      {sector}
+                      <button
+                        type="button"
+                        onClick={() => removeExclusion(sector)}
+                        className="text-slate-400 hover:text-rose-400"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => updateMutation.mutate()}
+              disabled={updateMutation.isPending}
+              className="rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 px-6 py-3 font-bold text-white shadow-glow-blue hover:from-blue-500 hover:to-cyan-400 disabled:opacity-50 transition-all"
+            >
+              {updateMutation.isPending ? 'Saving...' : 'Save Preferences'}
+            </button>
+          </div>
+        </div>
+
+        {/* Danger Zone: Delete My Data */}
+        <div className="rounded-3xl border border-rose-500/20 bg-rose-500/5 p-8 shadow-2xl space-y-4 backdrop-blur-xl">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-rose-400 flex items-center gap-2">
+            <span>⚠️ DPDP Account Deletion & Right to Erasure</span>
+          </h3>
+          <p className="text-xs text-slate-300 leading-relaxed">
+            Permanently removes your account, uploaded research files, vector embeddings, and
+            pseudonymises historical quantitative prediction records (severing all personal identity
+            links in compliance with India DPDP requirements).
+          </p>
           <button
             type="button"
-            onClick={() => updateMutation.mutate()}
-            disabled={updateMutation.isPending}
-            className="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+            onClick={() => {
+              setIsDeleteOpen(true);
+              setPasswordInput('');
+              setConfirmInput('');
+              setDeleteError(null);
+            }}
+            className="rounded-2xl bg-rose-600/90 hover:bg-rose-600 px-5 py-2.5 text-xs font-bold text-white shadow-lg transition-all"
           >
-            {updateMutation.isPending ? 'Saving...' : 'Save Settings'}
+            Delete My Data
           </button>
         </div>
-      </div>
 
-      {/* Danger Zone: Delete My Data */}
-      <div className="rounded-xl border border-red-200 bg-red-50 p-6 shadow-sm space-y-3">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-red-900">
-          Privacy & Account Deletion
-        </h3>
-        <p className="text-xs text-red-700 leading-relaxed">
-          Permanently removes your account, uploaded research files, vector embeddings, and
-          pseudonymises historical quantitative prediction records (severing all personal identity
-          links).
-        </p>
-        <button
-          type="button"
-          onClick={() => {
-            setIsDeleteOpen(true);
-            setPasswordInput('');
-            setConfirmInput('');
-            setDeleteError(null);
-          }}
-          className="rounded bg-red-600 px-4 py-2 text-xs font-semibold text-white hover:bg-red-700"
-        >
-          Delete My Data
-        </button>
-      </div>
+        {/* Delete Confirmation Modal */}
+        {isDeleteOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+            <div className="w-full max-w-md rounded-3xl border border-white/10 bg-[#0d1322] p-8 shadow-2xl space-y-5">
+              <h4 className="text-base font-bold text-white">Confirm Irreversible Deletion</h4>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                This action cannot be undone. To permanently delete your data, please enter your current password
+                and type <strong className="text-rose-400 font-mono">DELETE</strong> in the box below:
+              </p>
 
-      {/* Delete Confirmation Modal */}
-      {isDeleteOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl space-y-4">
-            <h4 className="text-base font-bold text-slate-900">Confirm Irreversible Deletion</h4>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              This action cannot be undone. To permanently delete your data, please enter your current password
-              and type <strong className="text-red-600 font-mono">DELETE</strong> in the box below:
-            </p>
+              {deleteError && (
+                <div className="rounded-xl bg-rose-500/10 p-3 text-xs text-rose-300 border border-rose-500/20">
+                  {deleteError}
+                </div>
+              )}
 
-            {deleteError && (
-              <div className="rounded bg-red-50 p-2.5 text-xs text-red-700 border border-red-200">
-                {deleteError}
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1.5">Current Password</label>
+                <input
+                  type="password"
+                  data-testid="delete-password-input"
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  placeholder="Enter your current password"
+                  className="w-full rounded-2xl border border-white/10 bg-[#141d33] p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50"
+                />
               </div>
-            )}
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Current Password</label>
-              <input
-                type="password"
-                data-testid="delete-password-input"
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                placeholder="Enter your current password"
-                className="w-full rounded border border-slate-300 p-2 text-xs"
-              />
-            </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1.5">Confirmation</label>
+                <input
+                  type="text"
+                  data-testid="delete-confirm-input"
+                  value={confirmInput}
+                  onChange={(e) => setConfirmInput(e.target.value)}
+                  placeholder="Type DELETE"
+                  className="w-full rounded-2xl border border-white/10 bg-[#141d33] p-3 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50"
+                />
+              </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Confirmation</label>
-              <input
-                type="text"
-                data-testid="delete-confirm-input"
-                value={confirmInput}
-                onChange={(e) => setConfirmInput(e.target.value)}
-                placeholder="Type DELETE"
-                className="w-full rounded border border-slate-300 p-2 text-xs font-mono"
-              />
-            </div>
-
-            <div className="flex justify-end gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => setIsDeleteOpen(false)}
-                className="rounded px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                data-testid="delete-confirm-button"
-                disabled={!passwordInput || confirmInput !== 'DELETE' || deleteDataMutation.isPending}
-                onClick={() => deleteDataMutation.mutate()}
-                className="rounded bg-red-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                {deleteDataMutation.isPending ? 'Deleting...' : 'Confirm Deletion'}
-              </button>
+              <div className="flex justify-end gap-3 pt-3">
+                <button
+                  type="button"
+                  onClick={() => setIsDeleteOpen(false)}
+                  className="rounded-2xl px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white hover:bg-white/5 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  data-testid="delete-confirm-button"
+                  disabled={!passwordInput || confirmInput !== 'DELETE' || deleteDataMutation.isPending}
+                  onClick={() => deleteDataMutation.mutate()}
+                  className="rounded-2xl bg-rose-600 px-5 py-2 text-xs font-bold text-white hover:bg-rose-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                >
+                  {deleteDataMutation.isPending ? 'Deleting...' : 'Confirm Deletion'}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

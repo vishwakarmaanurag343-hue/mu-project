@@ -21,33 +21,70 @@ function NavigationLayout(): React.JSX.Element {
   const { user, logout } = useAuth();
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      <nav className="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between text-xs">
-        <div className="flex items-center gap-6">
-          <Link to="/" className="font-extrabold text-base tracking-tight text-slate-900">
-            AlphaLens
+    <div className="min-h-screen bg-[#070b12] text-slate-100 flex flex-col font-sans selection:bg-blue-600 selection:text-white">
+      {/* Top Glass Navigation Bar */}
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#0d1322]/80 border-b border-white/5 px-6 py-3.5 flex items-center justify-between shadow-2xl">
+        <div className="flex items-center gap-8">
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 p-[1px] shadow-glow-blue">
+              <div className="w-full h-full bg-[#0d1322] rounded-[11px] flex items-center justify-center">
+                <span className="text-cyan-400 font-black text-sm">α</span>
+              </div>
+            </div>
+            <span className="font-extrabold text-base tracking-tight text-white group-hover:text-cyan-400 transition-colors">
+              AlphaLens
+            </span>
           </Link>
-          <div className="flex items-center gap-4 text-slate-600 font-medium">
-            <Link to="/" className="hover:text-blue-600">Search</Link>
-            <Link to="/upload" className="hover:text-blue-600">Upload</Link>
-            <Link to="/history" className="hover:text-blue-600">History</Link>
-            <Link to="/calibration" className="hover:text-blue-600">Calibration</Link>
-            <Link to="/settings" className="hover:text-blue-600">Settings</Link>
-          </div>
+
+          <nav className="flex items-center gap-1 bg-[#131b2e]/60 p-1 rounded-xl border border-white/5 text-xs">
+            <Link
+              to="/"
+              className="px-3.5 py-1.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all"
+            >
+              Dashboard
+            </Link>
+            <Link
+              to="/upload"
+              className="px-3.5 py-1.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all"
+            >
+              Upload
+            </Link>
+            <Link
+              to="/history"
+              className="px-3.5 py-1.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all"
+            >
+              Audit History
+            </Link>
+            <Link
+              to="/calibration"
+              className="px-3.5 py-1.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all"
+            >
+              Reliability Lab
+            </Link>
+            <Link
+              to="/settings"
+              className="px-3.5 py-1.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all"
+            >
+              Settings
+            </Link>
+          </nav>
         </div>
 
         {user && (
-          <div className="flex items-center gap-3">
-            <span className="text-slate-500 font-mono">{user.email}</span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2.5 bg-[#131b2e]/80 border border-white/10 px-3 py-1.5 rounded-xl">
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+              <span className="text-xs text-slate-300 font-mono">{user.email}</span>
+            </div>
             <button
               onClick={() => void logout()}
-              className="rounded bg-slate-100 hover:bg-slate-200 px-2.5 py-1 text-slate-700 font-semibold"
+              className="rounded-xl bg-white/5 hover:bg-rose-500/10 hover:text-rose-400 border border-white/10 hover:border-rose-500/30 px-3 py-1.5 text-xs text-slate-300 font-semibold transition-all"
             >
               Sign out
             </button>
           </div>
         )}
-      </nav>
+      </header>
 
       <div className="flex-1">
         <Suspense fallback={<div className="p-8 max-w-4xl mx-auto"><SkeletonLoader /></div>}>

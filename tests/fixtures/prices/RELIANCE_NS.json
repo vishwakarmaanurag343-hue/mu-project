@@ -1,0 +1,36 @@
+[
+  {
+    "Date": "2023-01-02 00:00:00+05:30",
+    "Open": 2570.0,
+    "High": 2590.0,
+    "Low": 2560.0,
+    "Close": 2575.0,
+    "Adj Close": 2575.0,
+    "Volume": 2000000,
+    "Dividends": 0.0,
+    "Stock Splits": 0.0
+  },
+  {
+    "Date": "2023-01-03 00:00:00+05:30",
+    "Open": 2575.0,
+    "High": 2585.0,
+    "Low": 2555.0,
+    "Close": 2565.0,
+    "Adj Close": 2565.0,
+    "Volume": 1800000,
+    "Dividends": 0.0,
+    "Stock Splits": 0.0
+  },
+  {
+    "Date": "2023-01-04 00:00:00+05:30",
+    "Open": 2565.0,
+    "High": 2570.0,
+    "Low": 2510.0,
+    "Close": 2518.0,
+    "Adj Close": 2518.0,
+    "Volume": 3100000,
+    "Dividends": 0.0,
+    "Stock Splits": 2.0
+  }
+]
+

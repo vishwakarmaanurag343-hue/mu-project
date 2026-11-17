@@ -35,7 +35,20 @@ export async function apiFetch<T>(
 
   // Attach X-CSRF-Token for state-changing requests
   if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
-    const csrfToken = getCookie('csrf_token');
+    let csrfToken = getCookie('csrf_token');
+    if (!csrfToken && url !== '/api/auth/csrf') {
+      try {
+        const csrfRes = await fetch('/api/auth/csrf', { credentials: 'same-origin' });
+        if (csrfRes.ok) {
+          const csrfJson = (await csrfRes.json()) as { csrf_token: string };
+          csrfToken = csrfJson.csrf_token || getCookie('csrf_token');
+        }
+      } catch {
+        // Fallback to cookie check
+        csrfToken = getCookie('csrf_token');
+      }
+    }
+
     if (csrfToken && !headers.has('X-CSRF-Token')) {
       headers.set('X-CSRF-Token', csrfToken);
     }

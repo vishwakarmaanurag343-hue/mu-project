@@ -17,10 +17,12 @@ from alphalens.api.routes.auth import limiter as auth_limiter
 from alphalens.api.routes.auth import router as auth_router
 from alphalens.api.routes.calibration import router as calibration_router
 from alphalens.api.routes.history import router as history_router
+from alphalens.api.routes.microstructure import router as microstructure_router
 from alphalens.api.routes.profile import router as profile_router
 from alphalens.api.routes.reports import router as reports_router
 from alphalens.api.routes.tickers import router as tickers_router
 from alphalens.api.routes.uploads import router as uploads_router
+from alphalens.api.routes.microstructure import router as microstructure_router
 from alphalens.api.security import RequestIdMiddleware, SecurityHeadersMiddleware
 from alphalens.config import get_settings
 from alphalens.db.session import init_db
@@ -108,6 +110,7 @@ def create_app() -> FastAPI:
     app.include_router(history_router)
     app.include_router(profile_router)
     app.include_router(calibration_router)
+    app.include_router(microstructure_router)
 
     @app.get("/api/health")
     async def health_check() -> dict[str, Any]:
@@ -126,7 +129,7 @@ def create_app() -> FastAPI:
             app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="static_assets")
 
         @app.get("/{full_path:path}")
-        async def spa_fallback(full_path: str) -> Any:
+        async def spa_fallback(request: Request, full_path: str) -> Any:
             clean_path = full_path.lstrip("/")
             if clean_path == "api" or clean_path.startswith("api/"):
                 raise StarletteHTTPException(
@@ -138,7 +141,20 @@ def create_app() -> FastAPI:
             if clean_path and target_file.is_file():
                 return FileResponse(target_file)
 
-            return FileResponse(frontend_dist / "index.html")
+            resp = FileResponse(frontend_dist / "index.html")
+            if not request.cookies.get("csrf_token"):
+                from alphalens.api.security import generate_csrf_token
+                token = generate_csrf_token()
+                resp.set_cookie(
+                    key="csrf_token",
+                    value=token,
+                    max_age=settings.refresh_token_expire_days * 86400,
+                    httponly=False,
+                    secure=settings.app_env == "prod",
+                    samesite="lax",
+                    path="/",
+                )
+            return resp
 
     return app
 
